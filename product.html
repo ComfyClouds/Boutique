@@ -34,6 +34,7 @@
     .product-name-big{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,4vw,48px);font-weight:300;line-height:1.1;}
     .product-price-big{font-size:28px;color:var(--bark);font-family:'Cormorant Garamond',serif;}
 
+    /* CUSTOMIZER */
     .customizer-box { background: rgba(107,79,53,0.05); padding: 20px; border-radius: 4px; display: flex; flex-direction: column; gap: 15px; margin-top: 10px; }
     .opt-group { display: flex; flex-direction: column; gap: 6px; }
     .opt-label { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--clay); font-weight: bold; }
@@ -42,19 +43,26 @@
         background: white; font-family: inherit; font-size: 14px;
     }
     .opt-textarea { height: 80px; resize: none; }
+
+    /* QTY */
+    .qty-section{display:flex;flex-direction:column;gap:12px;margin: 10px 0;}
+    .qty-control{display:flex;align-items:center;gap:0;width:fit-content;border:1px solid rgba(107,79,53,0.25);}
+    .qty-btn{background:none;border:none;width:40px;height:40px;cursor:pointer;font-size:18px;color:var(--bark);}
+    .qty-display{width:50px;height:40px;border:none;border-left:1px solid rgba(107,79,53,0.2);border-right:1px solid rgba(107,79,53,0.2);text-align:center;font-size:16px;background:transparent;}
     
-    .add-to-cart-btn{background:var(--bark);color:var(--cream);border:none;padding:18px;cursor:pointer;font-size:11px;letter-spacing:3px;text-transform:uppercase;width:100%;}
+    .add-to-cart-btn{background:var(--bark);color:var(--cream);border:none;padding:18px;cursor:pointer;font-size:11px;letter-spacing:3px;text-transform:uppercase;width:100%;transition: 0.3s;}
+    .add-to-cart-btn:hover{background:var(--charcoal);}
 
     #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #C94C4C; color: white; padding: 12px 24px; border-radius: 40px; font-size: 13px; z-index: 999; display: none; }
-
     footer{background:var(--bark);color:var(--cream);padding:32px 60px;text-align:center;font-size:12px;margin-top:60px;}
     
+    .loading { text-align:center; padding:100px; font-size:20px; color:var(--clay); font-style:italic; }
+
     @media(max-width:800px){
       .product-page{grid-template-columns:1fr;padding:24px;}
       .product-gallery{padding-right:0;margin-bottom:32px;}
       .product-details{padding-left:0;}
       nav{padding:16px 24px;}
-      .breadcrumb{padding:20px 24px 0;}
     }
   </style>
 </head>
@@ -83,7 +91,7 @@
 <div id="toast"></div>
 
 <div id="page-content">
-  <div class="loading">Loading product…</div>
+  <div class="loading">Loading your blooms...</div>
 </div>
 
 <footer>
@@ -97,6 +105,7 @@
   let product = null;
   let options = [];
   let basePrice = 0;
+  let currentQty = 1;
 
   function setLang(lang) {
     currentLang = lang;
@@ -108,11 +117,10 @@
     if (product) renderProduct();
   }
 
-  function showToast(msg) {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.style.display = 'block';
-    setTimeout(() => t.style.display = 'none', 3000);
+  function changeQty(delta) {
+    currentQty = Math.max(1, currentQty + delta);
+    const el = document.getElementById('qty-display');
+    if (el) el.value = currentQty;
   }
 
   function updatePrice() {
@@ -152,7 +160,6 @@
         </div>
     `).join('');
 
-    // FIXED IMAGE LOGIC
     const media = (p.emoji && p.emoji.includes('http')) 
         ? `<img src="${p.emoji}" alt="${name}">` 
         : p.emoji || '🌸';
@@ -175,6 +182,15 @@
             ` : ''}
           </div>
 
+          <div class="qty-section">
+            <div class="opt-label">${currentLang === 'ar' ? 'الكمية' : 'Quantity'}</div>
+            <div class="qty-control">
+              <button class="qty-btn" onclick="changeQty(-1)">−</button>
+              <input type="number" class="qty-display" id="qty-display" value="${currentQty}" readonly>
+              <button class="qty-btn" onclick="changeQty(1)">+</button>
+            </div>
+          </div>
+
           <button class="add-to-cart-btn" onclick="handleAddToCart()">
             ${currentLang === 'ar' ? 'أضيفي للسلة' : 'Add to Cart'}
           </button>
@@ -190,11 +206,12 @@
     try {
       const res = await fetch(`${APPS_SCRIPT_URL}?action=getProduct&id=${id}`);
       const data = await res.json();
+      if (data.error) throw new Error(data.error);
       product = data.product;
       options = data.options || [];
       renderProduct();
     } catch(e) {
-      document.getElementById('page-content').innerHTML = '<div class="loading">Error loading product.</div>';
+      document.getElementById('page-content').innerHTML = '<div class="loading">Product not found.</div>';
     }
   }
 
@@ -202,21 +219,24 @@
     const isSpecial = product.category === 'special-bouquets';
     const noteEl = document.getElementById('item-note');
     if (isSpecial && (!noteEl || noteEl.value.trim() === "")) {
-        showToast(currentLang === 'ar' ? "اكتبي الحكاية عشان نرسمها على الكارت" : "Write the story to draw it on the card");
+        const t = document.getElementById('toast');
+        t.textContent = currentLang === 'ar' ? "اكتبي الحكاية عشان نرسمها على الكارت" : "Write the story to draw it on the card";
+        t.style.display = 'block';
+        setTimeout(() => t.style.display = 'none', 3000);
         return;
     }
     let specs = [];
     document.querySelectorAll('.opt-select').forEach(sel => {
         specs.push(`${sel.dataset.cat}: ${sel.value}`);
     });
-    if (noteEl) specs.push(`Note: ${noteEl.value}`);
+    if (noteEl && noteEl.value) specs.push(`Note: ${noteEl.value}`);
 
     const cartItem = {
         id: product.id + '-' + Date.now(),
         baseId: product.id,
         name: currentLang === 'ar' ? (product.nameAr || product.name) : product.name,
         price: parseFloat(document.getElementById('display-price').textContent),
-        qty: 1,
+        qty: currentQty,
         specifications: specs.join(' | '),
         emoji: product.emoji
     };
@@ -226,14 +246,14 @@
     window.location.href = 'cart.html';
   }
 
-  updateCartCount();
-  loadData();
-  setLang(currentLang);
-  
   function updateCartCount() {
     const cart = JSON.parse(localStorage.getItem('lb_cart') || '[]');
     document.getElementById('cart-count').textContent = cart.reduce((s,i)=>s+i.qty,0);
   }
+
+  updateCartCount();
+  loadData();
+  setLang(currentLang);
 </script>
 </body>
 </html>
