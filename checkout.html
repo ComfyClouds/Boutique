@@ -286,8 +286,12 @@
     const delivery = isFreeDelivery ? 0 : currentDeliveryFee;
     const finalTotal = subtotal + delivery - discountAmount;
 
+    // GENERATE UNIQUE ID ONCE
+    const sharedOrderId = "LB-" + Date.now();
+
     const orderData = {
       action: 'placeOrder',
+      orderId: sharedOrderId, // Sending the unique ID to your sheet
       firstName: document.getElementById('firstName').value,
       lastName: document.getElementById('lastName').value,
       phone: document.getElementById('phone').value,
@@ -305,9 +309,9 @@
       promoCode: appliedPromoCode
     };
 
-    // SAVE DATA FOR THANKS PAGE
+    // SAVE DATA FOR THANKS PAGE (Using the same shared ID)
     const thanksData = {
-      orderId: Math.floor(1000 + Math.random() * 9000),
+      orderId: sharedOrderId,
       name: orderData.firstName,
       items: cart,
       total: finalTotal
