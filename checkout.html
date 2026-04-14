@@ -48,7 +48,6 @@
     .spinner{width:50px;height:50px;border:3px solid rgba(245,239,224,0.2);border-top-color:var(--cream);border-radius:50%;animation:spin 1s linear infinite;}
     @keyframes spin{to{transform:rotate(360deg);}}
 
-    /* Toast Notification Styles */
     .toast-container { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 1000; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
     .toast { background: var(--charcoal); color: var(--cream); padding: 16px 28px; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; opacity: 0; transform: translateY(20px); transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1); pointer-events: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
     .toast.show { opacity: 1; transform: translateY(0); }
@@ -283,6 +282,10 @@
       return;
     }
 
+    const subtotal = cart.reduce((s,i)=>s+i.price*i.qty,0);
+    const delivery = isFreeDelivery ? 0 : currentDeliveryFee;
+    const finalTotal = subtotal + delivery - discountAmount;
+
     const orderData = {
       action: 'placeOrder',
       firstName: document.getElementById('firstName').value,
@@ -295,12 +298,21 @@
       notes: document.getElementById('notes').value,
       paymentMethod: selectedPayment,
       items: JSON.stringify(cart),
-      subtotal: cart.reduce((s,i)=>s+i.price*i.qty,0),
-      delivery: isFreeDelivery ? 0 : currentDeliveryFee,
+      subtotal: subtotal,
+      delivery: delivery,
       discount: discountAmount,
-      total: parseFloat(document.getElementById('co-total').textContent),
+      total: finalTotal,
       promoCode: appliedPromoCode
     };
+
+    // SAVE DATA FOR THANKS PAGE
+    const thanksData = {
+      orderId: Math.floor(1000 + Math.random() * 9000),
+      name: orderData.firstName,
+      items: cart,
+      total: finalTotal
+    };
+    localStorage.setItem('lb_last_order', JSON.stringify(thanksData));
 
     document.getElementById('processing-overlay').classList.add('show');
     showToast("Processing your order...", "جاري معالجة طلبك...", "success");
