@@ -125,7 +125,7 @@
 
 <footer>
   <div class="footer-brand"><em>Lovers</em> Boutique | لوفرز بوتيك</div>
-  <p data-en="© 2025 All rights reserved." data-ar="© 2025 جميع الحقوق محفوظة.">© 2025 All rights reserved.</p>
+  <p data-en="© 2026 All rights reserved." data-ar="© 2026 جميع الحقوق محفوظة.">© 2026 All rights reserved.</p>
 </footer>
 
 <script>
@@ -148,45 +148,56 @@
 
   function renderOrder() {
     const orderStr = localStorage.getItem('lb_last_order');
-    if (!orderStr) return;
+    const preview = document.getElementById('order-items-preview');
+    const badge = document.getElementById('order-id-badge');
+    const titleEl = document.getElementById('ty-title');
+    const msgEl = document.getElementById('ty-msg');
+
+    if (!orderStr) {
+      badge.style.display = 'none';
+      titleEl.innerHTML = currentLang === 'ar' ? 'مرحباً بكِ!' : 'Welcome!';
+      msgEl.textContent = currentLang === 'ar' ? 'لا يوجد طلبات حديثة لعرضها.' : 'No recent order found to display.';
+      preview.innerHTML = '';
+      return;
+    }
+
     const order = JSON.parse(orderStr);
     const priceLbl = currentLang === 'ar' ? 'ج.م' : 'EGP';
 
-    document.getElementById('order-id-badge').textContent = (currentLang === 'ar' ? 'طلب رقم #' : 'Order #') + order.orderId;
+    badge.style.display = 'inline-block';
+    badge.textContent = (currentLang === 'ar' ? 'طلب رقم #' : 'Order #') + (order.orderId || '---');
 
-    const titleEl = document.getElementById('ty-title');
     if (currentLang === 'ar') {
-      titleEl.innerHTML = `شكراً لكِ <em>${order.name}!</em>`;
+      titleEl.innerHTML = `شكراً لكِ <em>${order.name || ''}!</em>`;
     } else {
-      titleEl.innerHTML = `Thank you, <em>${order.name}!</em>`;
+      titleEl.innerHTML = `Thank you, <em>${order.name || ''}!</em>`;
     }
 
-    document.getElementById('ty-msg').textContent = currentLang === 'ar'
+    msgEl.textContent = currentLang === 'ar'
       ? 'تم استقبال طلبك وبدأنا نُعدّ زهورك بكل حب. سنتواصل معكِ قريباً لتأكيد تفاصيل التوصيل عبر واتساب.'
       : 'Your order has been received and we\'re already preparing your blooms with love. We\'ll be in touch soon to confirm your delivery details via WhatsApp.';
 
-    const preview = document.getElementById('order-items-preview');
     if (order.items && order.items.length) {
       const rows = order.items.map(item => {
-        const name = currentLang === 'ar' ? (item.nameAr||item.name) : item.name;
+        const name = currentLang === 'ar' ? (item.nameAr || item.name) : item.name;
         const imgDisplay = (item.emoji && item.emoji.includes('http')) 
             ? `<div class="order-item-img"><img src="${item.emoji}"></div>` 
-            : `<span style="margin-right:10px">${item.emoji||'🌸'}</span>`;
+            : `<span style="margin-right:10px">${item.emoji || '🌸'}</span>`;
 
         return `<div class="order-item-row">
           <div class="order-item-left">
             ${imgDisplay}
             <span>${name} × ${item.qty}</span>
           </div>
-          <span>${item.price*item.qty} ${priceLbl}</span>
+          <span>${item.price * item.qty} ${priceLbl}</span>
         </div>`;
       }).join('');
 
       preview.innerHTML = `
-        <div class="order-items-title">${currentLang==='ar'?'تفاصيل الطلب':'Order Details'}</div>
+        <div class="order-items-title">${currentLang === 'ar' ? 'تفاصيل الطلب' : 'Order Details'}</div>
         ${rows}
         <div class="order-total-row">
-          <span>${currentLang==='ar'?'الإجمالي':'Total'}</span>
+          <span>${currentLang === 'ar' ? 'الإجمالي' : 'Total'}</span>
           <span>${order.total} ${priceLbl}</span>
         </div>`;
     }
