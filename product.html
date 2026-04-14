@@ -17,8 +17,8 @@
     .cart-btn{background:var(--bark);color:var(--cream);border:none;padding:10px 22px;cursor:pointer;font-size:12px;letter-spacing:1.5px;font-family:'Lato',sans-serif;display:flex;align-items:center;gap:8px;text-decoration:none;}
     .cart-count{background:var(--clay);color:#fff;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:bold;}
     .lang-toggle{display:flex;gap:6px;}
-    .lang-btn{background:transparent;border:1px solid var(--bark);color:var(--bark);padding:5px 12px;font-size:11px;letter-spacing:1.5px;cursor:pointer;font-family:'Lato',sans-serif;transition:all 0.3s;}
-    .lang-btn.active,.lang-btn:hover{background:var(--bark);color:var(--cream);}
+    .lang-btn{background:transparent;border:1px solid var(--bark);color:var(--bark);padding:5px 12px;font-size:11px;letter-spacing:1.5px;cursor:pointer;font-family:'Lato',sans-serif;}
+    .lang-btn.active{background:var(--bark);color:var(--cream);}
 
     .breadcrumb{padding:24px 60px 0;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--clay);}
     .breadcrumb a{color:var(--clay);text-decoration:none;}
@@ -34,33 +34,27 @@
     .product-name-big{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,4vw,48px);font-weight:300;line-height:1.1;}
     .product-price-big{font-size:28px;color:var(--bark);font-family:'Cormorant Garamond',serif;}
 
-    /* CUSTOMIZER STYLES */
     .customizer-box { background: rgba(107,79,53,0.05); padding: 20px; border-radius: 4px; display: flex; flex-direction: column; gap: 15px; margin-top: 10px; }
     .opt-group { display: flex; flex-direction: column; gap: 6px; }
     .opt-label { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--clay); font-weight: bold; }
     .opt-select, .opt-textarea { 
         width: 100%; padding: 10px; border: 1px solid rgba(107,79,53,0.2); 
-        background: white; font-family: inherit; font-size: 14px; color: var(--charcoal);
+        background: white; font-family: inherit; font-size: 14px;
     }
     .opt-textarea { height: 80px; resize: none; }
     
-    .add-to-cart-btn{
-      background:var(--bark);color:var(--cream);border:none;padding:18px;cursor:pointer;
-      font-size:11px;letter-spacing:3px;text-transform:uppercase;transition:all 0.3s;width:100%;
-    }
-    .add-to-cart-btn:hover{background:var(--charcoal);}
+    .add-to-cart-btn{background:var(--bark);color:var(--cream);border:none;padding:18px;cursor:pointer;font-size:11px;letter-spacing:3px;text-transform:uppercase;width:100%;}
 
-    /* TOAST */
-    #toast {
-        position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
-        background: #C94C4C; color: white; padding: 12px 24px; border-radius: 40px;
-        font-size: 13px; z-index: 999; display: none; transition: all 0.3s;
-    }
+    #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #C94C4C; color: white; padding: 12px 24px; border-radius: 40px; font-size: 13px; z-index: 999; display: none; }
 
+    footer{background:var(--bark);color:var(--cream);padding:32px 60px;text-align:center;font-size:12px;margin-top:60px;}
+    
     @media(max-width:800px){
       .product-page{grid-template-columns:1fr;padding:24px;}
       .product-gallery{padding-right:0;margin-bottom:32px;}
       .product-details{padding-left:0;}
+      nav{padding:16px 24px;}
+      .breadcrumb{padding:20px 24px 0;}
     }
   </style>
 </head>
@@ -94,6 +88,7 @@
 
 <footer>
   <div class="footer-brand"><em>Lovers</em> Boutique | لوفرز بوتيك</div>
+  <p>© 2026 All rights reserved.</p>
 </footer>
 
 <script>
@@ -138,7 +133,6 @@
     
     document.getElementById('breadcrumb-name').textContent = name;
     
-    // Group options by category
     const grouped = options.reduce((acc, opt) => {
         if (!acc[opt.category]) acc[opt.category] = [];
         acc[opt.category].push(opt);
@@ -151,14 +145,17 @@
             <select class="opt-select" onchange="updatePrice()" data-cat="${cat}">
                 ${grouped[cat].map(o => `
                     <option value="${o.name}" data-adj="${o.priceAdj}">
-                        ${currentLang === 'ar' ? o.nameAr : o.name} ${o.priceAdj > 0 ? '(+' + o.priceAdj + ')' : ''}
+                        ${currentLang === 'ar' ? (o.nameAr || o.name) : o.name} ${o.priceAdj > 0 ? '(+' + o.priceAdj + ')' : ''}
                     </option>
                 `).join('')}
             </select>
         </div>
     `).join('');
 
-    const media = p.emoji.startsWith('http') ? `<img src="${p.emoji}">` : p.emoji;
+    // FIXED IMAGE LOGIC
+    const media = (p.emoji && p.emoji.includes('http')) 
+        ? `<img src="${p.emoji}" alt="${name}">` 
+        : p.emoji || '🌸';
 
     document.getElementById('page-content').innerHTML = `
       <div class="product-page">
@@ -166,7 +163,7 @@
         <div class="product-details">
           <h1 class="product-name-big">${name}</h1>
           <div class="product-price-big"><span id="display-price">${p.price}</span> <span>EGP</span></div>
-          <p class="product-desc">${desc}</p>
+          <p class="product-desc">${desc || ''}</p>
           
           <div class="customizer-box">
             ${optionsHtml}
@@ -188,16 +185,26 @@
     updatePrice();
   }
 
+  async function loadData() {
+    const id = new URLSearchParams(window.location.search).get('id');
+    try {
+      const res = await fetch(`${APPS_SCRIPT_URL}?action=getProduct&id=${id}`);
+      const data = await res.json();
+      product = data.product;
+      options = data.options || [];
+      renderProduct();
+    } catch(e) {
+      document.getElementById('page-content').innerHTML = '<div class="loading">Error loading product.</div>';
+    }
+  }
+
   function handleAddToCart() {
     const isSpecial = product.category === 'special-bouquets';
     const noteEl = document.getElementById('item-note');
-    
     if (isSpecial && (!noteEl || noteEl.value.trim() === "")) {
-        const msg = currentLang === 'ar' ? "مش مجرد ورد دي حكاية مرسومة بإيد .. اكتبي الحكاية عشان نرسمها على الكارت" : "Write the story to draw it on the card";
-        showToast(msg);
+        showToast(currentLang === 'ar' ? "اكتبي الحكاية عشان نرسمها على الكارت" : "Write the story to draw it on the card");
         return;
     }
-
     let specs = [];
     document.querySelectorAll('.opt-select').forEach(sel => {
         specs.push(`${sel.dataset.cat}: ${sel.value}`);
@@ -205,39 +212,28 @@
     if (noteEl) specs.push(`Note: ${noteEl.value}`);
 
     const cartItem = {
-        id: product.id + '-' + Date.now(), // Unique ID for custom variants
+        id: product.id + '-' + Date.now(),
         baseId: product.id,
-        name: currentLang === 'ar' ? product.nameAr : product.name,
+        name: currentLang === 'ar' ? (product.nameAr || product.name) : product.name,
         price: parseFloat(document.getElementById('display-price').textContent),
         qty: 1,
         specifications: specs.join(' | '),
         emoji: product.emoji
     };
-
     const cart = JSON.parse(localStorage.getItem('lb_cart') || '[]');
     cart.push(cartItem);
     localStorage.setItem('lb_cart', JSON.stringify(cart));
-    
     window.location.href = 'cart.html';
   }
 
-  async function loadData() {
-    const id = new URLSearchParams(window.location.search).get('id');
-    const res = await fetch(`${APPS_SCRIPT_URL}?action=getProduct&id=${id}`);
-    const data = await res.json();
-    product = data.product;
-    options = data.options || [];
-    renderProduct();
-    updateCartCount();
-  }
-
+  updateCartCount();
+  loadData();
+  setLang(currentLang);
+  
   function updateCartCount() {
     const cart = JSON.parse(localStorage.getItem('lb_cart') || '[]');
     document.getElementById('cart-count').textContent = cart.reduce((s,i)=>s+i.qty,0);
   }
-
-  setLang(currentLang);
-  loadData();
 </script>
 </body>
 </html>
