@@ -8,15 +8,15 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Lato:wght@300;400&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
   <style>
     :root {
-      --cream: #F5EFE0;
-      --warm-white: #FAF6EE;
-      --bark: #6B4F35;
-      --moss: #6B7A5A;
-      --clay: #B07D5C;
-      --sand: #D4B896;
-      --charcoal: #2C2416;
-      --gold: #C9A84C;
-    }
+  --cream: #FFF5F7;        /* Very pale blush tint instead of yellow-cream */
+  --warm-white: #FCF8F9;   /* Soft white with a hint of rose */
+  --bark: #6E464B;         /* Deep rosewood/brown-pink instead of wood-bark */
+  --moss: #A67B83;         /* Dusty mauve/rose instead of moss green */
+  --clay: #D6949B;         /* Muted terracotta pink instead of clay orange */
+  --sand: #E8C1C5;         /* Soft petal pink instead of sandy beige */
+  --charcoal: #362628;     /* Very dark espresso-berry instead of charcoal brown */
+  --gold: #D4AF37;         /* Classic gold (kept to accent the pinks) */
+}
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -176,28 +176,47 @@
 
     .hero-right {
       position: relative;
-      background: var(--moss);
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
     }
 
-    .floral-canvas {
+    .hero-banner-img {
       width: 100%;
       height: 100%;
       position: absolute;
       top: 0; left: 0;
+      object-fit: cover;
+      z-index: 1; /* Lowest level in right panel */
     }
 
-    /* SVG Floral Illustration */
-    .hero-floral-wrap {
-      position: relative;
-      z-index: 2;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 16px;
+    /* Restored and adjusted text overlay from old version */
+    .boutique-name-image-overlay {
+      position: absolute;
+      bottom: 40px; /* Positioned near bottom of image, center */
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: Georgia, serif;
+      font-size: 13px;
+      fill: rgba(245,239,224,0.35); /* Text color from SVG */
+      color: rgba(245,239,224,0.4); /* Fallback/Adjustment for HTML rendering over image */
+      letter-spacing: 8px;
+      font-style: italic;
+      text-anchor: middle;
+      z-index: 5; /* Floors above image and background Wash */
+      white-space: nowrap;
+    }
+
+    /* Background wash effect over image, keeps depth */
+    .image-wash {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0; left: 0;
+        background: #5A6B4A; /* original rect fill */
+        opacity: 0.2; /* Subtle wash over image */
+        z-index: 2;
     }
 
     .boutique-name-vertical {
@@ -211,6 +230,7 @@
       right: 28px;
       top: 50%;
       transform: translateY(-50%);
+      z-index: 10; /* keeps text above image and wash */
     }
     body.ar .boutique-name-vertical { right: auto; left: 28px; writing-mode: vertical-lr; }
 
@@ -220,6 +240,7 @@
       bottom: 0; left: 0; right: 0;
       height: 4px;
       background: linear-gradient(to right, var(--clay), var(--gold), var(--moss));
+      z-index: 10; /* keeps strip above image */
     }
 
     /* Scroll hint */
@@ -233,6 +254,7 @@
       align-items: center;
       gap: 8px;
       opacity: 0.5;
+      z-index: 10; /* keeps hint above image */
     }
     .scroll-hint span {
       font-size: 9px;
@@ -470,13 +492,11 @@
 </head>
 <body>
 
-  <!-- Language Toggle -->
   <div class="lang-toggle">
     <button class="lang-btn active" onclick="setLang('en')" id="btn-en">EN</button>
     <button class="lang-btn" onclick="setLang('ar')" id="btn-ar">ع</button>
   </div>
 
-  <!-- HERO -->
   <section class="hero">
     <div class="hero-left">
       <div class="boutique-tag" data-en="Handcrafted with love" data-ar="مصنوع بكل حب">Handcrafted with love</div>
@@ -484,9 +504,9 @@
         <span data-en="Lovers" data-ar="لوفرز">Lovers</span><br>
         <em><span data-en="Boutique" data-ar="بوتيك">Boutique</span></em>
       </h1>
-  <p class="hero-subtitle" 
-   data-en="Here, every flower is more than just a bloom…<br>It’s a feeling, carefully drawn and softly spoken.<br><br>Each bouquet is crafted by hands that love art,<br>and a heart that sees beauty in the smallest details.<br><br>We don’t just create flowers…<br>we create moments, emotions, and stories that last.<br><br>Drawn with love… just for you." 
-   data-ar="هنا، كل وردة مش مجرد شكل…<br>دي إحساس بيتترسم، وحكاية بتتقال من غير كلام.<br><br>كل بوكيه معمول بإيدين بتحب الفن،<br>وبقلب شايف الجمال في التفاصيل الصغيرة.<br><br>مش بنقدم ورد وبس…<br>بنقدم لحظات، ومشاعر، وحكايات بتعيش.<br><br>مرسوم بحب… مخصوص ليك">
+  <p class="hero-subtitle" 
+   data-en="Here, every flower is more than just a bloom…<br>It’s a feeling, carefully drawn and softly spoken.<br><br>Each bouquet is crafted by hands that love art,<br>and a heart that sees beauty in the smallest details.<br><br>We don’t just create flowers…<br>we create moments, emotions, and stories that last.<br><br>Drawn with love… just for you." 
+   data-ar="هنا، كل وردة مش مجرد شكل…<br>دي إحساس بيتترسم، وحكاية بتتقال من غير كلام.<br><br>كل بوكيه معمول بإيدين بتحب الفن, <br>وبقلب شايف الجمال في التفاصيل الصغيرة.<br><br>مش بنقدم ورد وبس…<br>بنقدم لحظات، ومشاعر، وحكايات بتعيش.<br><br>مرسوم بحب… مخصوص ليك">
    Here, every flower is more than just a bloom…<br>
    It’s a feeling, carefully drawn and softly spoken.<br><br>
    Each bouquet is crafted by hands that love art,<br>
@@ -502,116 +522,11 @@
     </div>
 
     <div class="hero-right">
-      <!-- Botanical SVG Illustration -->
-      <svg class="floral-canvas" viewBox="0 0 600 700" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
-        <!-- Background wash -->
-        <rect width="600" height="700" fill="#5A6B4A"/>
-        <!-- Texture overlay -->
-        <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feBlend in="SourceGraphic" mode="multiply" result="blend"/></filter>
-        <rect width="600" height="700" fill="rgba(0,0,0,0.15)" filter="url(#grain)" opacity="0.4"/>
+      <img src="https://www.dropbox.com/scl/fi/huo9hfqztmy03a1az3p59/Logo.jpg?rlkey=od7cct3hs9gbti1k3gs684ozw&st=rde9k3i0&raw=1" alt="Lovers Boutique Banner" class="hero-banner-img">
 
-        <!-- Large stems -->
-        <path d="M200 700 Q210 580 190 480 Q180 400 220 300" stroke="#8A9A72" stroke-width="2" fill="none" opacity="0.7"/>
-        <path d="M300 700 Q295 600 310 500 Q320 400 290 280" stroke="#7A8A62" stroke-width="2.5" fill="none" opacity="0.8"/>
-        <path d="M400 700 Q410 590 390 480 Q380 380 420 260" stroke="#8A9A72" stroke-width="2" fill="none" opacity="0.6"/>
+      <div class="image-wash"></div>
 
-        <!-- Leaves on stems -->
-        <ellipse cx="195" cy="490" rx="28" ry="12" fill="#7A8A62" opacity="0.8" transform="rotate(-30 195 490)"/>
-        <ellipse cx="215" cy="420" rx="22" ry="9" fill="#6B7A55" opacity="0.7" transform="rotate(20 215 420)"/>
-        <ellipse cx="305" cy="510" rx="30" ry="11" fill="#8A9A72" opacity="0.75" transform="rotate(15 305 510)"/>
-        <ellipse cx="285" cy="440" rx="25" ry="10" fill="#7A8A62" opacity="0.7" transform="rotate(-25 285 440)"/>
-        <ellipse cx="395" cy="500" rx="26" ry="11" fill="#6B7A55" opacity="0.8" transform="rotate(-20 395 500)"/>
-
-        <!-- Dried flower heads - fluffy circles -->
-        <!-- Center bloom - large -->
-        <circle cx="290" cy="260" r="55" fill="#C9A060" opacity="0.25"/>
-        <circle cx="290" cy="260" r="42" fill="#D4B070" opacity="0.3"/>
-        <!-- Petals for center bloom -->
-        <g opacity="0.85">
-          <ellipse cx="290" cy="210" rx="10" ry="22" fill="#D4A860" transform="rotate(0 290 260)"/>
-          <ellipse cx="290" cy="210" rx="10" ry="22" fill="#C9984A" transform="rotate(30 290 260)"/>
-          <ellipse cx="290" cy="210" rx="10" ry="22" fill="#D4A860" transform="rotate(60 290 260)"/>
-          <ellipse cx="290" cy="210" rx="10" ry="22" fill="#C9984A" transform="rotate(90 290 260)"/>
-          <ellipse cx="290" cy="210" rx="10" ry="22" fill="#D4A860" transform="rotate(120 290 260)"/>
-          <ellipse cx="290" cy="210" rx="10" ry="22" fill="#C9984A" transform="rotate(150 290 260)"/>
-          <ellipse cx="290" cy="210" rx="10" ry="22" fill="#D4A860" transform="rotate(180 290 260)"/>
-          <ellipse cx="290" cy="210" rx="10" ry="22" fill="#C9984A" transform="rotate(210 290 260)"/>
-          <ellipse cx="290" cy="210" rx="10" ry="22" fill="#D4A860" transform="rotate(240 290 260)"/>
-          <ellipse cx="290" cy="210" rx="10" ry="22" fill="#C9984A" transform="rotate(270 290 260)"/>
-          <ellipse cx="290" cy="210" rx="10" ry="22" fill="#D4A860" transform="rotate(300 290 260)"/>
-          <ellipse cx="290" cy="210" rx="10" ry="22" fill="#C9984A" transform="rotate(330 290 260)"/>
-        </g>
-        <circle cx="290" cy="260" r="22" fill="#B07840"/>
-
-        <!-- Left side bloom -->
-        <g transform="translate(165, 310) rotate(-15)">
-          <circle cx="0" cy="0" r="35" fill="#B89060" opacity="0.2"/>
-          <ellipse cx="0" cy="-28" rx="7" ry="16" fill="#D4A060" opacity="0.8"/>
-          <ellipse cx="0" cy="-28" rx="7" ry="16" fill="#C09050" opacity="0.8" transform="rotate(45 0 0)"/>
-          <ellipse cx="0" cy="-28" rx="7" ry="16" fill="#D4A060" opacity="0.8" transform="rotate(90 0 0)"/>
-          <ellipse cx="0" cy="-28" rx="7" ry="16" fill="#C09050" opacity="0.8" transform="rotate(135 0 0)"/>
-          <ellipse cx="0" cy="-28" rx="7" ry="16" fill="#D4A060" opacity="0.8" transform="rotate(180 0 0)"/>
-          <ellipse cx="0" cy="-28" rx="7" ry="16" fill="#C09050" opacity="0.8" transform="rotate(225 0 0)"/>
-          <ellipse cx="0" cy="-28" rx="7" ry="16" fill="#D4A060" opacity="0.8" transform="rotate(270 0 0)"/>
-          <ellipse cx="0" cy="-28" rx="7" ry="16" fill="#C09050" opacity="0.8" transform="rotate(315 0 0)"/>
-          <circle cx="0" cy="0" r="14" fill="#8A6030"/>
-        </g>
-
-        <!-- Right side bloom -->
-        <g transform="translate(420, 295) rotate(10)">
-          <circle cx="0" cy="0" r="30" fill="#A88050" opacity="0.2"/>
-          <ellipse cx="0" cy="-24" rx="6" ry="14" fill="#C8A060" opacity="0.85" transform="rotate(0 0 0)"/>
-          <ellipse cx="0" cy="-24" rx="6" ry="14" fill="#B89050" opacity="0.85" transform="rotate(40 0 0)"/>
-          <ellipse cx="0" cy="-24" rx="6" ry="14" fill="#C8A060" opacity="0.85" transform="rotate(80 0 0)"/>
-          <ellipse cx="0" cy="-24" rx="6" ry="14" fill="#B89050" opacity="0.85" transform="rotate(120 0 0)"/>
-          <ellipse cx="0" cy="-24" rx="6" ry="14" fill="#C8A060" opacity="0.85" transform="rotate(160 0 0)"/>
-          <ellipse cx="0" cy="-24" rx="6" ry="14" fill="#B89050" opacity="0.85" transform="rotate(200 0 0)"/>
-          <ellipse cx="0" cy="-24" rx="6" ry="14" fill="#C8A060" opacity="0.85" transform="rotate(240 0 0)"/>
-          <ellipse cx="0" cy="-24" rx="6" ry="14" fill="#B89050" opacity="0.85" transform="rotate(280 0 0)"/>
-          <ellipse cx="0" cy="-24" rx="6" ry="14" fill="#C8A060" opacity="0.85" transform="rotate(320 0 0)"/>
-          <circle cx="0" cy="0" r="12" fill="#7A5020"/>
-        </g>
-
-        <!-- Small wild flowers scattered -->
-        <g transform="translate(130,380)">
-          <circle cx="0" cy="0" r="5" fill="#E8C890" opacity="0.9"/>
-          <ellipse cx="0" cy="-9" rx="3" ry="7" fill="#F0D8A0" opacity="0.8" transform="rotate(0 0 0)"/>
-          <ellipse cx="0" cy="-9" rx="3" ry="7" fill="#F0D8A0" opacity="0.8" transform="rotate(60 0 0)"/>
-          <ellipse cx="0" cy="-9" rx="3" ry="7" fill="#F0D8A0" opacity="0.8" transform="rotate(120 0 0)"/>
-          <ellipse cx="0" cy="-9" rx="3" ry="7" fill="#F0D8A0" opacity="0.8" transform="rotate(180 0 0)"/>
-          <ellipse cx="0" cy="-9" rx="3" ry="7" fill="#F0D8A0" opacity="0.8" transform="rotate(240 0 0)"/>
-          <ellipse cx="0" cy="-9" rx="3" ry="7" fill="#F0D8A0" opacity="0.8" transform="rotate(300 0 0)"/>
-        </g>
-        <g transform="translate(460,360)">
-          <circle cx="0" cy="0" r="4" fill="#E8C890" opacity="0.9"/>
-          <ellipse cx="0" cy="-8" rx="3" ry="6" fill="#F0D8A0" opacity="0.8" transform="rotate(0 0 0)"/>
-          <ellipse cx="0" cy="-8" rx="3" ry="6" fill="#F0D8A0" opacity="0.8" transform="rotate(60 0 0)"/>
-          <ellipse cx="0" cy="-8" rx="3" ry="6" fill="#F0D8A0" opacity="0.8" transform="rotate(120 0 0)"/>
-          <ellipse cx="0" cy="-8" rx="3" ry="6" fill="#F0D8A0" opacity="0.8" transform="rotate(180 0 0)"/>
-          <ellipse cx="0" cy="-8" rx="3" ry="6" fill="#F0D8A0" opacity="0.8" transform="rotate(240 0 0)"/>
-          <ellipse cx="0" cy="-8" rx="3" ry="6" fill="#F0D8A0" opacity="0.8" transform="rotate(300 0 0)"/>
-        </g>
-
-        <!-- Dried grass / wheat sprigs -->
-        <g opacity="0.6">
-          <path d="M100 700 Q95 650 100 600 Q102 570 98 540" stroke="#C8A84A" stroke-width="1.5" fill="none"/>
-          <ellipse cx="98" cy="535" rx="4" ry="10" fill="#C8A84A" transform="rotate(-10 98 535)"/>
-          <ellipse cx="103" cy="548" rx="3" ry="8" fill="#D4B456" transform="rotate(15 103 548)"/>
-          <ellipse cx="93" cy="552" rx="3" ry="8" fill="#C8A84A" transform="rotate(-20 93 552)"/>
-        </g>
-        <g opacity="0.55">
-          <path d="M500 700 Q498 640 503 590 Q506 560 501 530" stroke="#C0A040" stroke-width="1.5" fill="none"/>
-          <ellipse cx="501" cy="525" rx="4" ry="10" fill="#C0A040" transform="rotate(8 501 525)"/>
-          <ellipse cx="507" cy="540" rx="3" ry="8" fill="#CCA84A" transform="rotate(-12 507 540)"/>
-          <ellipse cx="495" cy="545" rx="3" ry="8" fill="#C0A040" transform="rotate(18 495 545)"/>
-        </g>
-
-        <!-- Ribbon / twine accent -->
-        <path d="M240 380 Q290 370 340 385" stroke="#D4B896" stroke-width="2" fill="none" opacity="0.5" stroke-dasharray="4,6"/>
-
-        <!-- Name text overlay -->
-        <text x="290" y="650" text-anchor="middle" font-family="Georgia, serif" font-size="13" fill="rgba(245,239,224,0.35)" letter-spacing="8" font-style="italic">Lovers Boutique</text>
-      </svg>
+      <div class="boutique-name-image-overlay">Lovers Boutique</div>
 
       <div class="boutique-name-vertical">Lovers Boutique</div>
     </div>
@@ -624,7 +539,6 @@
     </div>
   </section>
 
-  <!-- STORY SECTION -->
   <section class="story fade-in">
     <div class="story-text">
       <div class="section-label" data-en="Our Story" data-ar="قصتنا">Our Story</div>
@@ -656,7 +570,6 @@
     </div>
   </section>
 
-  <!-- CATEGORIES PREVIEW -->
   <section class="categories-preview fade-in">
     <div class="section-header">
       <span class="label" data-en="Browse by Category" data-ar="تصفحي حسب الفئة">Browse by Category</span>
@@ -691,7 +604,6 @@
     </div>
   </section>
 
-  <!-- CTA BANNER -->
   <section class="cta-banner fade-in">
     <h2 data-en="Every occasion deserves <em>flowers</em>" data-ar="كل مناسبة تستحق <em>الزهور</em>">Every occasion deserves <em>flowers</em></h2>
     <p data-en="Shop our full collection and find the perfect piece for every moment." data-ar="تصفحي مجموعتنا الكاملة وابحثي عن القطعة المثالية لكل لحظة.">Shop our full collection and find the perfect piece for every moment.</p>
@@ -701,7 +613,6 @@
     </a>
   </section>
 
-  <!-- FOOTER -->
   <footer>
     <div class="footer-brand"><em>Lovers</em> Boutique</div>
     <p data-en="© 2026 Lovers Boutique. All rights reserved." data-ar="© 2026 لوفرز بوتيك. جميع الحقوق محفوظة.">© 2026 Lovers Boutique. All rights reserved.</p>
