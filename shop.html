@@ -185,12 +185,6 @@
     }
     .add-to-cart-quick:hover { background:var(--charcoal); }
 
-    .no-products {
-      grid-column:1/-1; text-align:center; padding:80px;
-      font-family:'Cormorant Garamond',serif; font-size:24px;
-      color:var(--clay); font-style:italic;
-    }
-
     .img-bg-1 { background: #D4C4A8; }
     .img-bg-2 { background: #C8B89A; }
     .img-bg-3 { background: #B8A888; }
@@ -222,7 +216,7 @@
   <div class="nav-actions">
     <a href="index.html" class="nav-home" data-en="Home" data-ar="الرئيسية">Home</a>
     <div class="lang-toggle">
-      <button class="lang-btn active" onclick="setLang('en')" id="btn-en">EN</button>
+      <button class="lang-btn" onclick="setLang('en')" id="btn-en">EN</button>
       <button class="lang-btn" onclick="setLang('ar')" id="btn-ar">ع</button>
     </div>
     <a href="cart.html" class="cart-btn">
@@ -279,7 +273,7 @@
     en: { 'bouquets':'Bouquets','special-bouquets':'Special Bouquets','dried-flowers':'Dried Flowers','gift-sets':'Gift Sets','seasonal':'Seasonal' },
     ar: { 'bouquets':'باقات','special-bouquets':'باقات خاصة','dried-flowers':'زهور مجففة','gift-sets':'هدايا','seasonal':'موسمية' }
   };
-  const catIcons = { 'bouquets':'💐','special-bouquets':'🌹','dried-flowers':'🌾','gift-sets':'🎁','seasonal':'🍂' };
+  const catIcons = { 'bouquets':'💐', 'special-bouquets':'🌹', 'dried-flowers':'🌾', 'gift-sets':'🎁', 'seasonal':'🍂' };
 
   function setLang(lang) {
     currentLang = lang;
@@ -320,8 +314,7 @@
 
   function filterCat(cat) {
     currentCat = cat;
-    const buttons = document.querySelectorAll('#cat-list button');
-    buttons.forEach(b => {
+    document.querySelectorAll('#cat-list button').forEach(b => {
       const matches = b.getAttribute('onclick').includes(`'${cat}'`);
       b.classList.toggle('active', matches);
     });
@@ -332,28 +325,34 @@
     const grid = document.getElementById('product-grid');
     const filtered = currentCat === 'all' ? allProducts : allProducts.filter(p => p.category === currentCat);
     const count = document.getElementById('results-count');
-    count.textContent = currentLang === 'ar'
-      ? `${filtered.length} منتج`
-      : `${filtered.length} product${filtered.length !== 1 ? 's' : ''}`;
+    count.textContent = currentLang === 'ar' ? `${filtered.length} منتج` : `${filtered.length} product${filtered.length !== 1 ? 's' : ''}`;
 
     if (filtered.length === 0) {
-      grid.innerHTML = `<div class="no-products" data-en="No products in this category yet." data-ar="لا توجد منتجات في هذه الفئة بعد.">No products in this category yet.</div>`;
+      grid.innerHTML = `<div class="no-products">${currentLang === 'ar' ? 'لا توجد منتجات في هذه الفئة بعد.' : 'No products in this category yet.'}</div>`;
       return;
     }
 
     const imgBgs = ['img-bg-1','img-bg-2','img-bg-3','img-bg-4','img-bg-5'];
     grid.innerHTML = filtered.map((p, i) => {
-      // Logic for Image or Emoji
       const imageDisplay = (p.emoji && p.emoji.includes('http')) 
         ? `<img src="${p.emoji}" alt="${p.name}">` 
         : (p.emoji || catIcons[p.category] || '🌸');
+
+      const isSpecial = p.category === 'special-bouquets';
+      const btnText = isSpecial 
+        ? (currentLang === 'ar' ? 'تصميم' : 'Customize')
+        : (currentLang === 'ar' ? 'أضيفي' : 'Add');
+      
+      const btnAction = isSpecial
+        ? `event.stopPropagation(); openProduct('${p.id}')`
+        : `addToCart(${JSON.stringify(p).replace(/"/g,'&quot;')}, event)`;
 
       return `
         <div class="product-card" onclick="openProduct('${p.id}')">
           <div class="product-img ${imgBgs[i % imgBgs.length]}">
             ${imageDisplay}
             <div class="product-img-overlay">
-              <span class="quick-view" data-en="View Details" data-ar="عرض التفاصيل">${currentLang === 'ar' ? 'عرض التفاصيل' : 'View Details'}</span>
+              <span class="quick-view">${currentLang === 'ar' ? 'عرض التفاصيل' : 'View Details'}</span>
             </div>
           </div>
           ${p.badge ? `<div class="product-badge">${currentLang === 'ar' ? (p.badgeAr||p.badge) : p.badge}</div>` : ''}
@@ -362,7 +361,7 @@
             <div class="product-name">${currentLang === 'ar' ? (p.nameAr||p.name) : p.name}</div>
             <div class="product-price">
               <span>${p.price} <span style="font-size:11px;opacity:0.7">${currentLang === 'ar' ? 'ج.م' : 'EGP'}</span></span>
-              <button class="add-to-cart-quick" onclick="addToCart(${JSON.stringify(p).replace(/"/g,'&quot;')}, event)">${currentLang === 'ar' ? 'أضيفي' : 'Add'}</button>
+              <button class="add-to-cart-quick" onclick="${btnAction}">${btnText}</button>
             </div>
           </div>
         </div>
@@ -371,41 +370,14 @@
   }
 
   async function loadProducts() {
-    const grid = document.getElementById('product-grid');
     try {
       const res = await fetch(`${APPS_SCRIPT_URL}?action=getProducts`);
       const data = await res.json();
       allProducts = data.products || [];
-
-      const params = new URLSearchParams(window.location.search);
-      const catParam = params.get('cat');
-      if (catParam) {
-        currentCat = catParam;
-        document.querySelectorAll('#cat-list button').forEach(b => {
-          const matches = b.getAttribute('onclick')?.includes(`'${catParam}'`);
-          b.classList.toggle('active', matches);
-        });
-      }
       renderProducts();
     } catch(err) {
-      allProducts = getDemoProducts();
-      renderProducts();
+      console.error("Fetch failed");
     }
-  }
-
-  function getDemoProducts() {
-    return [
-      { id:'p001', name:'Garden Rose Bouquet', nameAr:'باقة ورد الحديقة', category:'bouquets', price:250, emoji:'💐', badge:'Bestseller', badgeAr:'الأكثر مبيعاً' },
-      { id:'p002', name:'Lavender Dream', nameAr:'حلم اللافندر', category:'bouquets', price:180, emoji:'💜' },
-      { id:'p003', name:'Luxury Red Roses', nameAr:'ورد أحمر فاخر', category:'special-bouquets', price:450, emoji:'🌹', badge:'Premium', badgeAr:'فاخر' },
-      { id:'p004', name:'White Elegance', nameAr:'أناقة بيضاء', category:'special-bouquets', price:380, emoji:'🤍' },
-      { id:'p005', name:'Pampas & Ruscus', nameAr:'بامباس وروسكوس', category:'dried-flowers', price:220, emoji:'🌾' },
-      { id:'p006', name:'Desert Rose Bundle', nameAr:'باقة وردة الصحراء', category:'dried-flowers', price:160, emoji:'🌵' },
-      { id:'p007', name:'Romantic Gift Box', nameAr:'صندوق هدايا رومانسي', category:'gift-sets', price:550, emoji:'🎁', badge:'New', badgeAr:'جديد' },
-      { id:'p008', name:'Mini Flower Set', nameAr:'مجموعة زهور صغيرة', category:'gift-sets', price:300, emoji:'🎀' },
-      { id:'p009', name:'Autumn Wreath', nameAr:'إكليل الخريف', category:'seasonal', price:320, emoji:'🍂' },
-      { id:'p010', name:'Spring Meadow', nameAr:'مرج الربيع', category:'seasonal', price:280, emoji:'🌼' },
-    ];
   }
 
   updateCartCount();
