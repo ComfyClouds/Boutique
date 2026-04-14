@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cart – Lovers Boutique</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Lato:wght@300;400&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root{--cream:#F5EFE0;--warm-white:#FAF6EE;--bark:#6B4F35;--moss:#6B7A5A;--clay:#B07D5C;--sand:#D4B896;--charcoal:#2C2416;--gold:#C9A84C;}
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{background:var(--warm-white);color:var(--charcoal);font-family:'Lato',sans-serif;font-weight:300;min-height:100vh;}
+    body.ar{font-family:'Amiri',serif;direction:rtl;}
+
+    nav{background:var(--warm-white);border-bottom:1px solid rgba(107,79,53,0.12);padding:20px 60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:90;}
+    .nav-brand{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;text-decoration:none;color:var(--charcoal);}
+    .nav-brand em{font-style:italic;color:var(--bark);}
+    .lang-toggle{display:flex;gap:6px;}
+    .lang-btn{background:transparent;border:1px solid var(--bark);color:var(--bark);padding:5px 12px;font-size:11px;letter-spacing:1.5px;cursor:pointer;font-family:'Lato',sans-serif;transition:all 0.3s;}
+    .lang-btn.active,.lang-btn:hover{background:var(--bark);color:var(--cream);}
+    .nav-actions{display:flex;gap:20px;align-items:center;}
+    .continue-btn{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;color:var(--clay);transition:color 0.3s;}
+    .continue-btn:hover{color:var(--bark);}
+
+    .page-header{background:var(--cream);padding:60px 60px 48px;border-bottom:1px solid rgba(107,79,53,0.1);position:relative;overflow:hidden;}
+    .page-header::after{content:'';position:absolute;bottom:-50px;right:-50px;width:200px;height:200px;background:radial-gradient(circle,rgba(107,122,90,0.05) 0%,transparent 70%);border-radius:50%;}
+    .breadcrumb{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--clay);margin-bottom:16px;display:block;}
+    .breadcrumb a{color:var(--clay);text-decoration:none;transition:color 0.3s;}
+    .breadcrumb a:hover{color:var(--bark);}
+    .page-header h1{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,5vw,56px);font-weight:300;line-height:1.1;}
+    .page-header h1 em{font-style:italic;color:var(--bark);}
+
+    .cart-layout{display:grid;grid-template-columns:1fr 380px;gap:60px;padding:60px;max-width:1400px;margin:0 auto;}
+
+    .cart-items-col h2{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;margin-bottom:32px;color:var(--bark);letter-spacing:1px;}
+    .cart-item{display:grid;grid-template-columns:100px 1fr auto;gap:32px;align-items:center;padding:32px 0;border-bottom:1px solid rgba(107,79,53,0.12);}
+    .cart-item:first-child{padding-top:0;}
+    
+    .item-emoji{width:100px;height:120px;background:var(--cream);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;}
+    .item-emoji img{width:100%;height:100%;object-fit:cover;}
+    .item-emoji span{font-size:40px;}
+
+    .item-info{display:flex;flex-direction:column;gap:8px;}
+    .item-name{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:var(--charcoal);}
+    .item-price-each{font-size:13px;color:#8A7A68;letter-spacing:0.5px;}
+
+    .qty-control{display:flex;align-items:center;margin-top:12px;width:fit-content;border:1px solid rgba(107,79,53,0.2);}
+    .qty-btn{background:none;border:none;width:40px;height:40px;cursor:pointer;font-size:18px;color:var(--bark);display:flex;align-items:center;justify-content:center;transition:background 0.2s;}
+    .qty-btn:hover{background:var(--cream);}
+    .qty-display{width:50px;height:40px;border:none;border-left:1px solid rgba(107,79,53,0.15);border-right:1px solid rgba(107,79,53,0.15);text-align:center;font-family:'Lato',sans-serif;font-size:14px;color:var(--charcoal);background:transparent;}
+
+    .item-right{text-align:right;display:flex;flex-direction:column;justify-content:space-between;height:100%;padding:8px 0;}
+    body.ar .item-right{text-align:left;}
+    .item-total{font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--bark);font-weight:400;}
+    .remove-btn{background:none;border:none;cursor:pointer;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#B0A090;text-decoration:none;border-bottom:1px solid transparent;transition:all 0.3s;width:fit-content;align-self:flex-end;}
+    body.ar .remove-btn{align-self:flex-start;}
+    .remove-btn:hover{color:var(--clay);border-bottom-color:var(--clay);}
+
+    .empty-cart{padding:100px 40px;text-align:center;background:var(--cream);margin-bottom:60px;}
+    .empty-cart .icon{font-size:80px;margin-bottom:24px;display:block;opacity:0.6;}
+    .empty-cart h3{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;margin-bottom:16px;}
+    .empty-cart p{color:#7A6A55;margin-bottom:32px;}
+    .empty-cart a{display:inline-block;background:var(--bark);color:var(--cream);padding:16px 40px;text-decoration:none;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;transition:background 0.3s;}
+    .empty-cart a:hover{background:var(--charcoal);}
+
+    .order-summary{background:var(--cream);padding:48px;height:fit-content;position:sticky;top:100px;}
+    .order-summary h2{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;margin-bottom:32px;color:var(--bark);border-bottom:1px solid rgba(107,79,53,0.1);padding-bottom:16px;}
+    .summary-row{display:flex;justify-content:space-between;margin-bottom:18px;font-size:15px;color:#7A6A55;}
+    .summary-divider{height:1px;background:rgba(107,79,53,0.15);margin:24px 0;}
+    .summary-total{display:flex;justify-content:space-between;font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--charcoal);margin-bottom:32px;}
+    
+    .checkout-btn{display:block;width:100%;background:var(--bark);color:var(--cream);border:none;padding:20px;cursor:pointer;font-size:11px;letter-spacing:3px;text-transform:uppercase;text-align:center;text-decoration:none;transition:all 0.3s;}
+    .checkout-btn:hover{background:var(--charcoal);transform:translateY(-2px);}
+    .shop-more-btn{display:block;width:100%;margin-top:16px;background:transparent;color:var(--bark);border:1px solid var(--bark);padding:18px;cursor:pointer;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;text-decoration:none;text-align:center;transition:all 0.3s;}
+    .shop-more-btn:hover{background:var(--warm-white);}
+
+    footer{background:var(--bark);color:var(--cream);padding:48px 60px;text-align:center;font-size:12px;}
+    .footer-brand{font-family:'Cormorant Garamond',serif;font-size:22px;margin-bottom:12px;}
+
+    @media(max-width:1000px){
+      .cart-layout{grid-template-columns:1fr;gap:40px;padding:40px;}
+      .order-summary{position:static;}
+    }
+    @media(max-width:600px){
+      nav{padding:15px 24px;}
+      .page-header{padding:40px 24px;}
+      .cart-layout{padding:24px;}
+      .cart-item{grid-template-columns:80px 1fr;gap:20px;}
+      .item-emoji{width:80px;height:100px;}
+      .item-right{grid-column:1 / span 2;flex-direction:row;align-items:center;border-top:1px solid rgba(107,79,53,0.05);padding-top:16px;margin-top:10px;}
+      .order-summary{padding:32px 24px;}
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-brand"><em>Lovers</em> Boutique</a>
+  <div class="nav-actions">
+    <a href="shop.html" class="continue-btn" data-en="← Continue Shopping" data-ar="→ متابعة التسوق">← Continue Shopping</a>
+    <div class="lang-toggle">
+      <button class="lang-btn active" onclick="setLang('en')" id="btn-en">EN</button>
+      <button class="lang-btn" onclick="setLang('ar')" id="btn-ar">ع</button>
+    </div>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="breadcrumb">
+    <a href="index.html" data-en="Home" data-ar="الرئيسية">Home</a> /
+    <a href="shop.html" data-en="Shop" data-ar="المتجر">Shop</a> /
+    <span data-en="Cart" data-ar="السلة">Cart</span>
+  </div>
+  <h1 data-en="Your <em>Cart</em>" data-ar="<em>سلتك</em>">Your <em>Cart</em></h1>
+</div>
+
+<div class="cart-layout">
+  <div class="cart-items-col">
+    <h2 data-en="Your Selection" data-ar="اختياراتك">Your Selection</h2>
+    <div id="cart-items-container"></div>
+  </div>
+
+  <div class="order-summary">
+    <h2 data-en="Order Summary" data-ar="ملخص الطلب">Order Summary</h2>
+    <div id="summary-rows"></div>
+    <div class="summary-divider"></div>
+
+    <a href="checkout.html" class="checkout-btn" id="checkout-btn" data-en="Proceed to Checkout →" data-ar="المتابعة للدفع →">Proceed to Checkout →</a>
+    <a href="shop.html" class="shop-more-btn" data-en="Continue Shopping" data-ar="متابعة التسوق">Continue Shopping</a>
+    <div style="text-align:center;margin-top:24px;font-size:11px;color:#A0907A;letter-spacing:1px;">
+      <span data-en="Secure Checkout" data-ar="دفع آمن 100%">Secure Checkout</span>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-brand"><em>Lovers</em> Boutique | لوفرز بوتيك</div>
+  <p data-en="© 2025 All rights reserved." data-ar="© 2025 جميع الحقوق محفوظة.">© 2025 All rights reserved.</p>
+</footer>
+
+<script>
+  let currentLang = localStorage.getItem('lb_lang') || 'en';
+
+  function setLang(lang) {
+    currentLang = lang;
+    localStorage.setItem('lb_lang', lang);
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    document.body.classList.toggle('ar', lang === 'ar');
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    document.getElementById('btn-ar').classList.toggle('active', lang === 'ar');
+    document.querySelectorAll('[data-en]').forEach(el => {
+      const val = el.getAttribute('data-' + lang);
+      if (val) el.innerHTML = val;
+    });
+    renderCart();
+  }
+
+  function getCart() { return JSON.parse(localStorage.getItem('lb_cart') || '[]'); }
+  function saveCart(cart) { localStorage.setItem('lb_cart', JSON.stringify(cart)); }
+
+  function updateQty(id, newQty) {
+    let cart = getCart();
+    if (newQty < 1) { removeItem(id); return; }
+    const idx = cart.findIndex(i => i.id === id);
+    if (idx > -1) cart[idx].qty = newQty;
+    saveCart(cart); renderCart();
+  }
+
+  function removeItem(id) {
+    let cart = getCart().filter(i => i.id !== id);
+    saveCart(cart); renderCart();
+  }
+
+  function renderCart() {
+    const cart = getCart();
+    const container = document.getElementById('cart-items-container');
+    const summaryRows = document.getElementById('summary-rows');
+    const grandTotal = document.getElementById('grand-total');
+    const checkoutBtn = document.getElementById('checkout-btn');
+    const priceLbl = currentLang === 'ar' ? 'ج.م' : 'EGP';
+
+    if (cart.length === 0) {
+      container.innerHTML = `
+        <div class="empty-cart">
+          <span class="icon">🌸</span>
+          <h3>${currentLang==='ar'?'سلتك فارغة':'Your cart is empty'}</h3>
+          <p>${currentLang==='ar'?'اكتشفي باقاتنا الجميلة وأضيفي المفضلة.':'Your selection of blooms is currently empty. Explore our collection to find your perfect match.'}</p>
+          <a href="shop.html">${currentLang==='ar'?'تسوقي الآن':'Start Shopping'}</a>
+        </div>`;
+      summaryRows.innerHTML = '';
+      grandTotal.textContent = `0 ${priceLbl}`;
+      checkoutBtn.style.opacity = '0.4';
+      checkoutBtn.style.pointerEvents = 'none';
+      return;
+    }
+
+    checkoutBtn.style.opacity = '1';
+    checkoutBtn.style.pointerEvents = 'auto';
+
+    container.innerHTML = cart.map(item => {
+      const name = currentLang === 'ar' ? (item.nameAr||item.name) : item.name;
+      const itemTotal = item.price * item.qty;
+      const imageDisplay = (item.emoji && item.emoji.includes('http')) 
+          ? `<img src="${item.emoji}" alt="${name}">` 
+          : `<span>${item.emoji || '🌸'}</span>`;
+
+      return `
+        <div class="cart-item">
+          <div class="item-emoji">${imageDisplay}</div>
+          <div class="item-info">
+            <div class="item-name">${name}</div>
+            <div class="item-price-each">${item.price} ${priceLbl} / ${currentLang==='ar'?'للقطعة':'item'}</div>
+            <div class="qty-control">
+              <button class="qty-btn" onclick="updateQty('${item.id}', ${item.qty-1})">−</button>
+              <input class="qty-display" type="number" value="${item.qty}" min="1" onchange="updateQty('${item.id}', parseInt(this.value)||1)">
+              <button class="qty-btn" onclick="updateQty('${item.id}', ${item.qty+1})">+</button>
+            </div>
+          </div>
+          <div class="item-right">
+            <div class="item-total">${itemTotal} ${priceLbl}</div>
+            <button class="remove-btn" onclick="removeItem('${item.id}')">${currentLang==='ar'?'إزالة':'Remove'}</button>
+          </div>
+        </div>`;
+    }).join('');
+
+    const subtotal = cart.reduce((s,i)=>s+i.price*i.qty,0);
+    const delivery = currentLang === 'ar' ? "يتم حسابها عند الدفع" : "Calculated in the Checkout";
+    summaryRows.innerHTML = `
+      <div class="summary-row"><span>${currentLang==='ar'?'المجموع الفرعي':'Subtotal'}</span><span>${subtotal} ${priceLbl}</span></div>
+      <div class="summary-row"><span>${currentLang==='ar'?'رسوم التوصيل':'Delivery Fee'}</span><span>${delivery}</span></div>
+    `;
+  }
+
+  setLang(currentLang);
+</script>
+</body>
+</html>

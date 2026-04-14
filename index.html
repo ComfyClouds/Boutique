@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lovers Boutique | لوفرز بوتيك</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Lato:wght@300;400&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #F5EFE0;
+      --warm-white: #FAF6EE;
+      --bark: #6B4F35;
+      --moss: #6B7A5A;
+      --clay: #B07D5C;
+      --sand: #D4B896;
+      --charcoal: #2C2416;
+      --gold: #C9A84C;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--warm-white);
+      color: var(--charcoal);
+      font-family: 'Lato', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    body.ar {
+      font-family: 'Amiri', serif;
+      direction: rtl;
+    }
+
+    /* Language Toggle */
+    .lang-toggle {
+      position: fixed;
+      top: 24px;
+      right: 28px;
+      z-index: 100;
+      display: flex;
+      gap: 6px;
+    }
+    body.ar .lang-toggle { right: auto; left: 28px; }
+
+    .lang-btn {
+      background: transparent;
+      border: 1px solid var(--bark);
+      color: var(--bark);
+      padding: 5px 14px;
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: all 0.3s;
+      font-family: 'Lato', sans-serif;
+    }
+    .lang-btn.active, .lang-btn:hover {
+      background: var(--bark);
+      color: var(--cream);
+    }
+
+    /* Hero */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+    }
+
+    .hero-left {
+      background: var(--cream);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 80px 60px 80px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-left::before {
+      content: '';
+      position: absolute;
+      top: -60px; left: -60px;
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(176,125,92,0.12) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .hero-left::after {
+      content: '';
+      position: absolute;
+      bottom: 40px; right: 0;
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(107,122,90,0.1) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .boutique-tag {
+      font-size: 10px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--clay);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .boutique-tag::before {
+      content: '';
+      display: inline-block;
+      width: 30px;
+      height: 1px;
+      background: var(--clay);
+    }
+    body.ar .boutique-tag { flex-direction: row-reverse; }
+    body.ar .boutique-tag::before { display: none; }
+    body.ar .boutique-tag::after {
+      content: '';
+      display: inline-block;
+      width: 30px;
+      height: 1px;
+      background: var(--clay);
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(52px, 6vw, 82px);
+      font-weight: 300;
+      line-height: 1.05;
+      color: var(--charcoal);
+      margin-bottom: 28px;
+    }
+    .hero-title em {
+      font-style: italic;
+      color: var(--bark);
+    }
+
+    .hero-subtitle {
+      font-size: 14px;
+      line-height: 1.9;
+      color: #7A6A55;
+      max-width: 340px;
+      margin-bottom: 52px;
+      letter-spacing: 0.3px;
+    }
+
+    .shop-now-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
+      background: var(--bark);
+      color: var(--cream);
+      padding: 16px 36px;
+      text-decoration: none;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      transition: all 0.4s ease;
+      position: relative;
+      font-family: 'Lato', sans-serif;
+      font-weight: 400;
+      width: fit-content;
+    }
+    .shop-now-btn:hover {
+      background: var(--charcoal);
+      gap: 22px;
+    }
+    .shop-now-btn .arrow {
+      font-size: 16px;
+      transition: transform 0.3s;
+    }
+    .shop-now-btn:hover .arrow { transform: translateX(4px); }
+    body.ar .shop-now-btn:hover .arrow { transform: translateX(-4px); }
+
+    .hero-right {
+      position: relative;
+      background: var(--moss);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .floral-canvas {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0; left: 0;
+    }
+
+    /* SVG Floral Illustration */
+    .hero-floral-wrap {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .boutique-name-vertical {
+      writing-mode: vertical-rl;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 13px;
+      letter-spacing: 6px;
+      color: rgba(245,239,224,0.5);
+      text-transform: uppercase;
+      position: absolute;
+      right: 28px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    body.ar .boutique-name-vertical { right: auto; left: 28px; writing-mode: vertical-lr; }
+
+    /* Decorative bottom strip */
+    .hero-bottom {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(to right, var(--clay), var(--gold), var(--moss));
+    }
+
+    /* Scroll hint */
+    .scroll-hint {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      opacity: 0.5;
+    }
+    .scroll-hint span {
+      font-size: 9px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--bark);
+    }
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: var(--bark);
+      animation: scrollDrop 1.8s ease infinite;
+    }
+    @keyframes scrollDrop {
+      0% { transform: scaleY(0); transform-origin: top; }
+      50% { transform: scaleY(1); transform-origin: top; }
+      51% { transform: scaleY(1); transform-origin: bottom; }
+      100% { transform: scaleY(0); transform-origin: bottom; }
+    }
+
+    /* Story Section */
+    .story {
+      padding: 100px 80px;
+      background: var(--warm-white);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .story-text .section-label {
+      font-size: 10px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--clay);
+      margin-bottom: 20px;
+    }
+
+    .story-text h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(36px, 4vw, 52px);
+      font-weight: 300;
+      line-height: 1.2;
+      margin-bottom: 24px;
+      color: var(--charcoal);
+    }
+    .story-text h2 em { font-style: italic; color: var(--bark); }
+
+    .story-text p {
+      font-size: 14px;
+      line-height: 1.9;
+      color: #7A6A55;
+      margin-bottom: 16px;
+    }
+
+    .story-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .story-card {
+      background: var(--cream);
+      padding: 32px 24px;
+      text-align: center;
+      border-bottom: 2px solid transparent;
+      transition: border-color 0.3s;
+    }
+    .story-card:hover { border-color: var(--clay); }
+    .story-card .icon { font-size: 28px; margin-bottom: 12px; }
+    .story-card h4 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+      margin-bottom: 8px;
+      color: var(--bark);
+    }
+    .story-card p { font-size: 12px; color: #8A7A68; line-height: 1.6; }
+
+    /* Categories Preview */
+    .categories-preview {
+      padding: 80px;
+      background: var(--cream);
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+    .section-header .label {
+      font-size: 10px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--clay);
+      margin-bottom: 16px;
+      display: block;
+    }
+    .section-header h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(36px, 4vw, 52px);
+      font-weight: 300;
+      color: var(--charcoal);
+    }
+    .section-header h2 em { font-style: italic; color: var(--moss); }
+
+    .cat-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+    }
+
+    .cat-card {
+      background: var(--warm-white);
+      padding: 40px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.4s;
+      position: relative;
+      overflow: hidden;
+      text-decoration: none;
+      display: block;
+    }
+    .cat-card::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 0;
+      background: var(--bark);
+      transition: height 0.4s ease;
+    }
+    .cat-card:hover::before { height: 4px; }
+    .cat-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(107,79,53,0.12); }
+
+    .cat-icon { font-size: 36px; margin-bottom: 16px; display: block; }
+    .cat-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 400;
+      color: var(--charcoal);
+      margin-bottom: 8px;
+      display: block;
+    }
+    .cat-name-ar {
+      font-family: 'Amiri', serif;
+      font-size: 16px;
+      color: var(--clay);
+      display: block;
+    }
+
+    /* CTA Banner */
+    .cta-banner {
+      padding: 100px 80px;
+      background: var(--charcoal);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-banner::before {
+      content: '';
+      position: absolute;
+      top: -100px; left: -100px;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(176,125,92,0.15) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .cta-banner::after {
+      content: '';
+      position: absolute;
+      bottom: -80px; right: -80px;
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(107,122,90,0.12) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .cta-banner h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(40px, 5vw, 64px);
+      font-weight: 300;
+      color: var(--cream);
+      margin-bottom: 20px;
+      position: relative; z-index: 1;
+    }
+    .cta-banner h2 em { font-style: italic; color: var(--sand); }
+    .cta-banner p {
+      font-size: 14px;
+      color: rgba(245,239,224,0.65);
+      margin-bottom: 40px;
+      position: relative; z-index: 1;
+      letter-spacing: 0.5px;
+    }
+    .cta-banner .shop-now-btn {
+      background: var(--clay);
+      position: relative; z-index: 1;
+    }
+    .cta-banner .shop-now-btn:hover { background: var(--sand); color: var(--charcoal); }
+
+    /* Footer */
+    footer {
+      background: var(--bark);
+      color: var(--cream);
+      padding: 40px 80px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    footer .footer-brand {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 300;
+    }
+    footer .footer-brand em { font-style: italic; }
+    footer p {
+      font-size: 11px;
+      opacity: 0.6;
+      letter-spacing: 1px;
+    }
+
+    /* Animations */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-right { min-height: 400px; }
+      .hero-left { padding: 80px 40px; }
+      .story, .categories-preview, .cta-banner { padding: 60px 32px; }
+      .story { grid-template-columns: 1fr; gap: 40px; }
+      .cat-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      footer { flex-direction: column; gap: 16px; text-align: center; padding: 32px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Language Toggle -->
+  <div class="lang-toggle">
+    <button class="lang-btn active" onclick="setLang('en')" id="btn-en">EN</button>
+    <button class="lang-btn" onclick="setLang('ar')" id="btn-ar">ع</button>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-left">
+      <div class="boutique-tag" data-en="Handcrafted with love" data-ar="مصنوع بكل حب">Handcrafted with love</div>
+      <h1 class="hero-title">
+        <span data-en="Lovers" data-ar="لوفرز">Lovers</span><br>
+        <em><span data-en="Boutique" data-ar="بوتيك">Boutique</span></em>
+      </h1>
+      <p class="hero-subtitle" data-en="Where every petal tells a story. Discover our handpicked arrangements, dried florals, and seasonal collections — crafted to celebrate every moment." data-ar="حيث تحكي كل بتلة قصة. اكتشفي باقاتنا المختارة بعناية، والزهور المجففة، والمجموعات الموسمية — مصنوعة للاحتفال بكل لحظة.">Where every petal tells a story. Discover our handpicked arrangements, dried florals, and seasonal collections — crafted to celebrate every moment.</p>
+      <a href="shop.html" class="shop-now-btn">
+        <span data-en="Shop Now" data-ar="تسوقي الآن">Shop Now</span>
+        <span class="arrow">→</span>
+      </a>
+    </div>
+
+    <div class="hero-right">
+      <!-- Botanical SVG Illustration -->
+      <svg class="floral-canvas" viewBox="0 0 600 700" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+        <!-- Background wash -->
+        <rect width="600" height="700" fill="#5A6B4A"/>
+        <!-- Texture overlay -->
+        <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feBlend in="SourceGraphic" mode="multiply" result="blend"/></filter>
+        <rect width="600" height="700" fill="rgba(0,0,0,0.15)" filter="url(#grain)" opacity="0.4"/>
+
+        <!-- Large stems -->
+        <path d="M200 700 Q210 580 190 480 Q180 400 220 300" stroke="#8A9A72" stroke-width="2" fill="none" opacity="0.7"/>
+        <path d="M300 700 Q295 600 310 500 Q320 400 290 280" stroke="#7A8A62" stroke-width="2.5" fill="none" opacity="0.8"/>
+        <path d="M400 700 Q410 590 390 480 Q380 380 420 260" stroke="#8A9A72" stroke-width="2" fill="none" opacity="0.6"/>
+
+        <!-- Leaves on stems -->
+        <ellipse cx="195" cy="490" rx="28" ry="12" fill="#7A8A62" opacity="0.8" transform="rotate(-30 195 490)"/>
+        <ellipse cx="215" cy="420" rx="22" ry="9" fill="#6B7A55" opacity="0.7" transform="rotate(20 215 420)"/>
+        <ellipse cx="305" cy="510" rx="30" ry="11" fill="#8A9A72" opacity="0.75" transform="rotate(15 305 510)"/>
+        <ellipse cx="285" cy="440" rx="25" ry="10" fill="#7A8A62" opacity="0.7" transform="rotate(-25 285 440)"/>
+        <ellipse cx="395" cy="500" rx="26" ry="11" fill="#6B7A55" opacity="0.8" transform="rotate(-20 395 500)"/>
+
+        <!-- Dried flower heads - fluffy circles -->
+        <!-- Center bloom - large -->
+        <circle cx="290" cy="260" r="55" fill="#C9A060" opacity="0.25"/>
+        <circle cx="290" cy="260" r="42" fill="#D4B070" opacity="0.3"/>
+        <!-- Petals for center bloom -->
+        <g opacity="0.85">
+          <ellipse cx="290" cy="210" rx="10" ry="22" fill="#D4A860" transform="rotate(0 290 260)"/>
+          <ellipse cx="290" cy="210" rx="10" ry="22" fill="#C9984A" transform="rotate(30 290 260)"/>
+          <ellipse cx="290" cy="210" rx="10" ry="22" fill="#D4A860" transform="rotate(60 290 260)"/>
+          <ellipse cx="290" cy="210" rx="10" ry="22" fill="#C9984A" transform="rotate(90 290 260)"/>
+          <ellipse cx="290" cy="210" rx="10" ry="22" fill="#D4A860" transform="rotate(120 290 260)"/>
+          <ellipse cx="290" cy="210" rx="10" ry="22" fill="#C9984A" transform="rotate(150 290 260)"/>
+          <ellipse cx="290" cy="210" rx="10" ry="22" fill="#D4A860" transform="rotate(180 290 260)"/>
+          <ellipse cx="290" cy="210" rx="10" ry="22" fill="#C9984A" transform="rotate(210 290 260)"/>
+          <ellipse cx="290" cy="210" rx="10" ry="22" fill="#D4A860" transform="rotate(240 290 260)"/>
+          <ellipse cx="290" cy="210" rx="10" ry="22" fill="#C9984A" transform="rotate(270 290 260)"/>
+          <ellipse cx="290" cy="210" rx="10" ry="22" fill="#D4A860" transform="rotate(300 290 260)"/>
+          <ellipse cx="290" cy="210" rx="10" ry="22" fill="#C9984A" transform="rotate(330 290 260)"/>
+        </g>
+        <circle cx="290" cy="260" r="22" fill="#B07840"/>
+
+        <!-- Left side bloom -->
+        <g transform="translate(165, 310) rotate(-15)">
+          <circle cx="0" cy="0" r="35" fill="#B89060" opacity="0.2"/>
+          <ellipse cx="0" cy="-28" rx="7" ry="16" fill="#D4A060" opacity="0.8"/>
+          <ellipse cx="0" cy="-28" rx="7" ry="16" fill="#C09050" opacity="0.8" transform="rotate(45 0 0)"/>
+          <ellipse cx="0" cy="-28" rx="7" ry="16" fill="#D4A060" opacity="0.8" transform="rotate(90 0 0)"/>
+          <ellipse cx="0" cy="-28" rx="7" ry="16" fill="#C09050" opacity="0.8" transform="rotate(135 0 0)"/>
+          <ellipse cx="0" cy="-28" rx="7" ry="16" fill="#D4A060" opacity="0.8" transform="rotate(180 0 0)"/>
+          <ellipse cx="0" cy="-28" rx="7" ry="16" fill="#C09050" opacity="0.8" transform="rotate(225 0 0)"/>
+          <ellipse cx="0" cy="-28" rx="7" ry="16" fill="#D4A060" opacity="0.8" transform="rotate(270 0 0)"/>
+          <ellipse cx="0" cy="-28" rx="7" ry="16" fill="#C09050" opacity="0.8" transform="rotate(315 0 0)"/>
+          <circle cx="0" cy="0" r="14" fill="#8A6030"/>
+        </g>
+
+        <!-- Right side bloom -->
+        <g transform="translate(420, 295) rotate(10)">
+          <circle cx="0" cy="0" r="30" fill="#A88050" opacity="0.2"/>
+          <ellipse cx="0" cy="-24" rx="6" ry="14" fill="#C8A060" opacity="0.85" transform="rotate(0 0 0)"/>
+          <ellipse cx="0" cy="-24" rx="6" ry="14" fill="#B89050" opacity="0.85" transform="rotate(40 0 0)"/>
+          <ellipse cx="0" cy="-24" rx="6" ry="14" fill="#C8A060" opacity="0.85" transform="rotate(80 0 0)"/>
+          <ellipse cx="0" cy="-24" rx="6" ry="14" fill="#B89050" opacity="0.85" transform="rotate(120 0 0)"/>
+          <ellipse cx="0" cy="-24" rx="6" ry="14" fill="#C8A060" opacity="0.85" transform="rotate(160 0 0)"/>
+          <ellipse cx="0" cy="-24" rx="6" ry="14" fill="#B89050" opacity="0.85" transform="rotate(200 0 0)"/>
+          <ellipse cx="0" cy="-24" rx="6" ry="14" fill="#C8A060" opacity="0.85" transform="rotate(240 0 0)"/>
+          <ellipse cx="0" cy="-24" rx="6" ry="14" fill="#B89050" opacity="0.85" transform="rotate(280 0 0)"/>
+          <ellipse cx="0" cy="-24" rx="6" ry="14" fill="#C8A060" opacity="0.85" transform="rotate(320 0 0)"/>
+          <circle cx="0" cy="0" r="12" fill="#7A5020"/>
+        </g>
+
+        <!-- Small wild flowers scattered -->
+        <g transform="translate(130,380)">
+          <circle cx="0" cy="0" r="5" fill="#E8C890" opacity="0.9"/>
+          <ellipse cx="0" cy="-9" rx="3" ry="7" fill="#F0D8A0" opacity="0.8" transform="rotate(0 0 0)"/>
+          <ellipse cx="0" cy="-9" rx="3" ry="7" fill="#F0D8A0" opacity="0.8" transform="rotate(60 0 0)"/>
+          <ellipse cx="0" cy="-9" rx="3" ry="7" fill="#F0D8A0" opacity="0.8" transform="rotate(120 0 0)"/>
+          <ellipse cx="0" cy="-9" rx="3" ry="7" fill="#F0D8A0" opacity="0.8" transform="rotate(180 0 0)"/>
+          <ellipse cx="0" cy="-9" rx="3" ry="7" fill="#F0D8A0" opacity="0.8" transform="rotate(240 0 0)"/>
+          <ellipse cx="0" cy="-9" rx="3" ry="7" fill="#F0D8A0" opacity="0.8" transform="rotate(300 0 0)"/>
+        </g>
+        <g transform="translate(460,360)">
+          <circle cx="0" cy="0" r="4" fill="#E8C890" opacity="0.9"/>
+          <ellipse cx="0" cy="-8" rx="3" ry="6" fill="#F0D8A0" opacity="0.8" transform="rotate(0 0 0)"/>
+          <ellipse cx="0" cy="-8" rx="3" ry="6" fill="#F0D8A0" opacity="0.8" transform="rotate(60 0 0)"/>
+          <ellipse cx="0" cy="-8" rx="3" ry="6" fill="#F0D8A0" opacity="0.8" transform="rotate(120 0 0)"/>
+          <ellipse cx="0" cy="-8" rx="3" ry="6" fill="#F0D8A0" opacity="0.8" transform="rotate(180 0 0)"/>
+          <ellipse cx="0" cy="-8" rx="3" ry="6" fill="#F0D8A0" opacity="0.8" transform="rotate(240 0 0)"/>
+          <ellipse cx="0" cy="-8" rx="3" ry="6" fill="#F0D8A0" opacity="0.8" transform="rotate(300 0 0)"/>
+        </g>
+
+        <!-- Dried grass / wheat sprigs -->
+        <g opacity="0.6">
+          <path d="M100 700 Q95 650 100 600 Q102 570 98 540" stroke="#C8A84A" stroke-width="1.5" fill="none"/>
+          <ellipse cx="98" cy="535" rx="4" ry="10" fill="#C8A84A" transform="rotate(-10 98 535)"/>
+          <ellipse cx="103" cy="548" rx="3" ry="8" fill="#D4B456" transform="rotate(15 103 548)"/>
+          <ellipse cx="93" cy="552" rx="3" ry="8" fill="#C8A84A" transform="rotate(-20 93 552)"/>
+        </g>
+        <g opacity="0.55">
+          <path d="M500 700 Q498 640 503 590 Q506 560 501 530" stroke="#C0A040" stroke-width="1.5" fill="none"/>
+          <ellipse cx="501" cy="525" rx="4" ry="10" fill="#C0A040" transform="rotate(8 501 525)"/>
+          <ellipse cx="507" cy="540" rx="3" ry="8" fill="#CCA84A" transform="rotate(-12 507 540)"/>
+          <ellipse cx="495" cy="545" rx="3" ry="8" fill="#C0A040" transform="rotate(18 495 545)"/>
+        </g>
+
+        <!-- Ribbon / twine accent -->
+        <path d="M240 380 Q290 370 340 385" stroke="#D4B896" stroke-width="2" fill="none" opacity="0.5" stroke-dasharray="4,6"/>
+
+        <!-- Name text overlay -->
+        <text x="290" y="650" text-anchor="middle" font-family="Georgia, serif" font-size="13" fill="rgba(245,239,224,0.35)" letter-spacing="8" font-style="italic">Lovers Boutique</text>
+      </svg>
+
+      <div class="boutique-name-vertical">Lovers Boutique</div>
+    </div>
+
+    <div class="hero-bottom"></div>
+
+    <div class="scroll-hint">
+      <span data-en="Explore" data-ar="اكتشفي">Explore</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- STORY SECTION -->
+  <section class="story fade-in">
+    <div class="story-text">
+      <div class="section-label" data-en="Our Story" data-ar="قصتنا">Our Story</div>
+      <h2 data-en="Blooms born from <em>passion</em>" data-ar="زهور وُلدت من <em>شغف</em>">Blooms born from <em>passion</em></h2>
+      <p data-en="Every arrangement at Lovers Boutique is a labor of love — carefully sourced, thoughtfully composed, and wrapped with care for the ones who matter most in your life." data-ar="كل باقة في لوفرز بوتيك هي عمل حب — مختارة بعناية، مرتبة بتأنٍّ، ومُغلَّفة باهتمام لأعزّ الناس في حياتك.">Every arrangement at Lovers Boutique is a labor of love — carefully sourced, thoughtfully composed, and wrapped with care for the ones who matter most in your life.</p>
+      <p data-en="From delicate dried florals to vibrant seasonal bouquets, we create pieces that breathe beauty into any space and sentiment." data-ar="من الزهور المجففة الرقيقة إلى الباقات الموسمية الزاهية، نصنع لك ما يضيف الجمال إلى كل مكان ومناسبة.">From delicate dried florals to vibrant seasonal bouquets, we create pieces that breathe beauty into any space and sentiment.</p>
+    </div>
+    <div class="story-grid">
+      <div class="story-card">
+        <div class="icon">🌿</div>
+        <h4 data-en="Natural & Fresh" data-ar="طبيعي وطازج">Natural & Fresh</h4>
+        <p data-en="Sourced from the finest local growers" data-ar="من أجود المزارعين المحليين">Sourced from the finest local growers</p>
+      </div>
+      <div class="story-card">
+        <div class="icon">🎁</div>
+        <h4 data-en="Gift Ready" data-ar="جاهز للهدية">Gift Ready</h4>
+        <p data-en="Beautifully packaged every order" data-ar="كل طلب معبأ بجمال">Beautifully packaged every order</p>
+      </div>
+      <div class="story-card">
+        <div class="icon">✂️</div>
+        <h4 data-en="Handcrafted" data-ar="صنع يدوي">Handcrafted</h4>
+        <p data-en="Every piece made with intention" data-ar="كل قطعة مصنوعة بقصد وحب">Every piece made with intention</p>
+      </div>
+      <div class="story-card">
+        <div class="icon">🚚</div>
+        <h4 data-en="Delivered Fresh" data-ar="توصيل طازج">Delivered Fresh</h4>
+        <p data-en="Same-day delivery available" data-ar="التوصيل في نفس اليوم متاح">Same-day delivery available</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CATEGORIES PREVIEW -->
+  <section class="categories-preview fade-in">
+    <div class="section-header">
+      <span class="label" data-en="Browse by Category" data-ar="تصفحي حسب الفئة">Browse by Category</span>
+      <h2 data-en="Our <em>Collections</em>" data-ar="<em>مجموعاتنا</em>">Our <em>Collections</em></h2>
+    </div>
+    <div class="cat-grid">
+      <a href="shop.html?cat=bouquets" class="cat-card">
+        <span class="cat-icon">💐</span>
+        <span class="cat-name" data-en="Bouquets" data-ar="باقات">Bouquets</span>
+        <span class="cat-name-ar" data-en="باقات" data-ar="Bouquets">باقات</span>
+      </a>
+      <a href="shop.html?cat=special-bouquets" class="cat-card">
+        <span class="cat-icon">🌹</span>
+        <span class="cat-name" data-en="Special Bouquets" data-ar="باقات خاصة">Special Bouquets</span>
+        <span class="cat-name-ar" data-en="باقات خاصة" data-ar="Special Bouquets">باقات خاصة</span>
+      </a>
+      <a href="shop.html?cat=dried-flowers" class="cat-card">
+        <span class="cat-icon">🌾</span>
+        <span class="cat-name" data-en="Dried Flowers" data-ar="زهور مجففة">Dried Flowers</span>
+        <span class="cat-name-ar" data-en="زهور مجففة" data-ar="Dried Flowers">زهور مجففة</span>
+      </a>
+      <a href="shop.html?cat=gift-sets" class="cat-card">
+        <span class="cat-icon">🎁</span>
+        <span class="cat-name" data-en="Gift Sets" data-ar="هدايا">Gift Sets</span>
+        <span class="cat-name-ar" data-en="هدايا" data-ar="Gift Sets">هدايا</span>
+      </a>
+      <a href="shop.html?cat=seasonal" class="cat-card">
+        <span class="cat-icon">🍂</span>
+        <span class="cat-name" data-en="Seasonal" data-ar="موسمية">Seasonal</span>
+        <span class="cat-name-ar" data-en="موسمية" data-ar="Seasonal">موسمية</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- CTA BANNER -->
+  <section class="cta-banner fade-in">
+    <h2 data-en="Every occasion deserves <em>flowers</em>" data-ar="كل مناسبة تستحق <em>الزهور</em>">Every occasion deserves <em>flowers</em></h2>
+    <p data-en="Shop our full collection and find the perfect piece for every moment." data-ar="تصفحي مجموعتنا الكاملة وابحثي عن القطعة المثالية لكل لحظة.">Shop our full collection and find the perfect piece for every moment.</p>
+    <a href="shop.html" class="shop-now-btn">
+      <span data-en="Explore the Shop" data-ar="استكشفي المتجر">Explore the Shop</span>
+      <span class="arrow">→</span>
+    </a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-brand"><em>Lovers</em> Boutique</div>
+    <p data-en="© 2025 Lovers Boutique. All rights reserved." data-ar="© 2025 لوفرز بوتيك. جميع الحقوق محفوظة.">© 2025 Lovers Boutique. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Language system
+    let currentLang = localStorage.getItem('lb_lang') || 'en';
+
+    function setLang(lang) {
+      currentLang = lang;
+      localStorage.setItem('lb_lang', lang);
+      document.documentElement.lang = lang;
+      document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+      document.body.classList.toggle('ar', lang === 'ar');
+      document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+      document.getElementById('btn-ar').classList.toggle('active', lang === 'ar');
+
+      document.querySelectorAll('[data-en]').forEach(el => {
+        const val = el.getAttribute('data-' + lang);
+        if (val) el.innerHTML = val;
+      });
+    }
+
+    setLang(currentLang);
+
+    // Fade in on scroll
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>

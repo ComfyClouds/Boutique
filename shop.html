@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Shop – Lovers Boutique</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Lato:wght@300;400&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #F5EFE0; --warm-white: #FAF6EE;
+      --bark: #6B4F35; --moss: #6B7A5A; --clay: #B07D5C;
+      --sand: #D4B896; --charcoal: #2C2416; --gold: #C9A84C;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { background:var(--warm-white); color:var(--charcoal); font-family:'Lato',sans-serif; font-weight:300; }
+    body.ar { font-family:'Amiri',serif; direction:rtl; }
+
+    /* NAV */
+    nav {
+      background: var(--warm-white);
+      border-bottom: 1px solid rgba(107,79,53,0.12);
+      padding: 20px 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky; top:0; z-index:90;
+    }
+    .nav-brand {
+      font-family:'Cormorant Garamond',serif;
+      font-size:26px; font-weight:300;
+      text-decoration:none; color:var(--charcoal);
+    }
+    .nav-brand em { font-style:italic; color:var(--bark); }
+    .nav-actions { display:flex; gap:20px; align-items:center; }
+    .nav-home { font-size:12px; letter-spacing:1.5px; text-transform:uppercase; text-decoration:none; color:var(--clay); }
+    .cart-btn {
+      background:var(--bark); color:var(--cream);
+      border:none; padding:10px 22px; cursor:pointer;
+      font-size:12px; letter-spacing:1.5px; font-family:'Lato',sans-serif;
+      display:flex; align-items:center; gap:8px;
+      text-decoration:none;
+    }
+    .cart-count {
+      background:var(--clay); color:#fff;
+      border-radius:50%; width:18px; height:18px;
+      display:flex; align-items:center; justify-content:center;
+      font-size:10px; font-weight:bold;
+    }
+    .lang-toggle { display:flex; gap:6px; }
+    .lang-btn {
+      background:transparent; border:1px solid var(--bark);
+      color:var(--bark); padding:5px 12px; font-size:11px;
+      letter-spacing:1.5px; cursor:pointer; font-family:'Lato',sans-serif;
+      transition:all 0.3s;
+    }
+    .lang-btn.active, .lang-btn:hover { background:var(--bark); color:var(--cream); }
+
+    /* PAGE HEADER */
+    .page-header {
+      background: var(--cream);
+      padding: 60px 60px 40px;
+      border-bottom: 1px solid rgba(107,79,53,0.1);
+    }
+    .breadcrumb {
+      font-size:11px; letter-spacing:2px; text-transform:uppercase;
+      color:var(--clay); margin-bottom:16px;
+    }
+    .breadcrumb a { color:var(--clay); text-decoration:none; }
+    .page-header h1 {
+      font-family:'Cormorant Garamond',serif;
+      font-size:clamp(36px,5vw,56px); font-weight:300;
+    }
+    .page-header h1 em { font-style:italic; color:var(--bark); }
+
+    /* LAYOUT */
+    .shop-layout {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 0;
+      min-height: 80vh;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      background:var(--cream);
+      border-right:1px solid rgba(107,79,53,0.1);
+      padding:40px 32px;
+      position:sticky; top:72px;
+      height:fit-content;
+    }
+    .sidebar-title {
+      font-size:10px; letter-spacing:3px; text-transform:uppercase;
+      color:var(--clay); margin-bottom:24px;
+    }
+    .cat-list { list-style:none; display:flex; flex-direction:column; gap:4px; }
+    .cat-list li button {
+      width:100%; text-align:left; background:none; border:none;
+      padding:12px 16px; cursor:pointer; font-family:'Lato',sans-serif;
+      font-size:13px; color:var(--charcoal); letter-spacing:0.5px;
+      transition:all 0.2s; border-left:3px solid transparent;
+    }
+    body.ar .cat-list li button { text-align:right; border-left:none; border-right:3px solid transparent; }
+    .cat-list li button:hover { color:var(--bark); background:rgba(176,125,92,0.06); }
+    .cat-list li button.active {
+      color:var(--bark); font-weight:400;
+      border-left-color:var(--bark); background:rgba(176,125,92,0.06);
+    }
+    body.ar .cat-list li button.active { border-left-color:transparent; border-right-color:var(--bark); }
+
+    /* PRODUCTS AREA */
+    .products-area { padding:40px 52px; }
+    .products-toolbar {
+      display:flex; justify-content:space-between; align-items:center;
+      margin-bottom:32px;
+    }
+    .results-count { font-size:13px; color:#8A7A68; }
+    .loading {
+      text-align:center; padding:80px;
+      font-family:'Cormorant Garamond',serif; font-size:22px;
+      color:var(--clay); font-style:italic;
+    }
+
+    /* PRODUCT GRID */
+    .product-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));
+      gap:28px;
+    }
+    .product-card {
+      background:var(--cream);
+      cursor:pointer;
+      transition:all 0.4s;
+      position:relative;
+      overflow:hidden;
+    }
+    .product-card:hover { transform:translateY(-6px); box-shadow:0 16px 40px rgba(44,36,22,0.1); }
+
+    .product-img {
+      width:100%; aspect-ratio:1;
+      background:var(--sand);
+      display:flex; align-items:center; justify-content:center;
+      font-size:56px;
+      position:relative; overflow:hidden;
+    }
+    .product-img img { width:100%; height:100%; object-fit:cover; }
+    
+    .product-img-overlay {
+      position:absolute; inset:0;
+      background:rgba(44,36,22,0.55);
+      display:flex; align-items:center; justify-content:center;
+      opacity:0; transition:opacity 0.3s;
+    }
+    .product-card:hover .product-img-overlay { opacity:1; }
+    .quick-view {
+      color:var(--cream); font-size:11px;
+      letter-spacing:2px; text-transform:uppercase;
+    }
+
+    .product-badge {
+      position:absolute; top:12px; left:12px;
+      background:var(--moss); color:var(--cream);
+      font-size:9px; letter-spacing:2px; text-transform:uppercase;
+      padding:4px 10px;
+    }
+    body.ar .product-badge { left:auto; right:12px; }
+
+    .product-info { padding:20px; }
+    .product-category {
+      font-size:9px; letter-spacing:2.5px; text-transform:uppercase;
+      color:var(--clay); margin-bottom:6px;
+    }
+    .product-name {
+      font-family:'Cormorant Garamond',serif; font-size:20px;
+      font-weight:400; margin-bottom:10px; line-height:1.2;
+    }
+    .product-price {
+      font-size:15px; color:var(--bark); font-weight:400;
+      display:flex; align-items:center; justify-content:space-between;
+    }
+    .add-to-cart-quick {
+      background:var(--bark); color:var(--cream);
+      border:none; padding:6px 14px; cursor:pointer;
+      font-size:10px; letter-spacing:1.5px; font-family:'Lato',sans-serif;
+      transition:background 0.2s;
+    }
+    .add-to-cart-quick:hover { background:var(--charcoal); }
+
+    .no-products {
+      grid-column:1/-1; text-align:center; padding:80px;
+      font-family:'Cormorant Garamond',serif; font-size:24px;
+      color:var(--clay); font-style:italic;
+    }
+
+    .img-bg-1 { background: #D4C4A8; }
+    .img-bg-2 { background: #C8B89A; }
+    .img-bg-3 { background: #B8A888; }
+    .img-bg-4 { background: #D0BAA0; }
+    .img-bg-5 { background: #C0AA90; }
+
+    footer {
+      background:var(--bark); color:var(--cream);
+      padding:32px 60px; text-align:center;
+      font-size:12px; opacity:0.9; margin-top:60px;
+    }
+    footer .footer-brand {
+      font-family:'Cormorant Garamond',serif; font-size:20px; margin-bottom:8px;
+    }
+
+    @media(max-width:800px) {
+      .shop-layout { grid-template-columns:1fr; }
+      .sidebar { position:static; border-right:none; border-bottom:1px solid rgba(107,79,53,0.1); }
+      nav { padding:16px 24px; }
+      .page-header { padding:40px 24px 24px; }
+      .products-area { padding:24px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-brand"><em>Lovers</em> Boutique</a>
+  <div class="nav-actions">
+    <a href="index.html" class="nav-home" data-en="Home" data-ar="الرئيسية">Home</a>
+    <div class="lang-toggle">
+      <button class="lang-btn active" onclick="setLang('en')" id="btn-en">EN</button>
+      <button class="lang-btn" onclick="setLang('ar')" id="btn-ar">ع</button>
+    </div>
+    <a href="cart.html" class="cart-btn">
+      <span data-en="Cart" data-ar="السلة">Cart</span>
+      <span class="cart-count" id="cart-count">0</span>
+    </a>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="breadcrumb">
+    <a href="index.html" data-en="Home" data-ar="الرئيسية">Home</a>
+    &nbsp;/&nbsp;<span data-en="Shop" data-ar="المتجر">Shop</span>
+  </div>
+  <h1 data-en="Our <em>Collection</em>" data-ar="<em>مجموعتنا</em>">Our <em>Collection</em></h1>
+</div>
+
+<div class="shop-layout">
+  <aside class="sidebar">
+    <div class="sidebar-title" data-en="Categories" data-ar="الفئات">Categories</div>
+    <ul class="cat-list" id="cat-list">
+      <li><button class="active" onclick="filterCat('all')" data-en="All Products" data-ar="جميع المنتجات">All Products</button></li>
+      <li><button onclick="filterCat('bouquets')" data-en="💐 Bouquets" data-ar="💐 باقات">💐 Bouquets</button></li>
+      <li><button onclick="filterCat('special-bouquets')" data-en="🌹 Special Bouquets" data-ar="🌹 باقات خاصة">🌹 Special Bouquets</button></li>
+      <li><button onclick="filterCat('dried-flowers')" data-en="🌾 Dried Flowers" data-ar="🌾 زهور مجففة">🌾 Dried Flowers</button></li>
+      <li><button onclick="filterCat('gift-sets')" data-en="🎁 Gift Sets" data-ar="🎁 هدايا">🎁 Gift Sets</button></li>
+      <li><button onclick="filterCat('seasonal')" data-en="🍂 Seasonal" data-ar="🍂 موسمية">🍂 Seasonal</button></li>
+    </ul>
+  </aside>
+
+  <div class="products-area">
+    <div class="products-toolbar">
+      <div class="results-count" id="results-count"></div>
+    </div>
+    <div id="product-grid" class="product-grid">
+      <div class="loading" data-en="Loading blooms…" data-ar="جارٍ التحميل…">Loading blooms…</div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-brand"><em>Lovers</em> Boutique | لوفرز بوتيك</div>
+  <p data-en="© 2025 All rights reserved." data-ar="© 2025 جميع الحقوق محفوظة.">© 2025 All rights reserved.</p>
+</footer>
+
+<script>
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwyYgttHn568VmZxxvMb23hbz5cEwCw0a2rNUNpe4AK3XF_FnHtIJpY-48Vtiibz3iW/exec';
+
+  let allProducts = [];
+  let currentCat = 'all';
+  let currentLang = localStorage.getItem('lb_lang') || 'en';
+
+  const catLabels = {
+    en: { 'bouquets':'Bouquets','special-bouquets':'Special Bouquets','dried-flowers':'Dried Flowers','gift-sets':'Gift Sets','seasonal':'Seasonal' },
+    ar: { 'bouquets':'باقات','special-bouquets':'باقات خاصة','dried-flowers':'زهور مجففة','gift-sets':'هدايا','seasonal':'موسمية' }
+  };
+  const catIcons = { 'bouquets':'💐','special-bouquets':'🌹','dried-flowers':'🌾','gift-sets':'🎁','seasonal':'🍂' };
+
+  function setLang(lang) {
+    currentLang = lang;
+    localStorage.setItem('lb_lang', lang);
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    document.body.classList.toggle('ar', lang === 'ar');
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    document.getElementById('btn-ar').classList.toggle('active', lang === 'ar');
+    document.querySelectorAll('[data-en]').forEach(el => {
+      const val = el.getAttribute('data-' + lang);
+      if (val) el.innerHTML = val;
+    });
+    renderProducts();
+  }
+
+  function updateCartCount() {
+    const cart = JSON.parse(localStorage.getItem('lb_cart') || '[]');
+    document.getElementById('cart-count').textContent = cart.reduce((s,i)=>s+i.qty,0);
+  }
+
+  function addToCart(product, e) {
+    e.stopPropagation();
+    const cart = JSON.parse(localStorage.getItem('lb_cart') || '[]');
+    const idx = cart.findIndex(i => i.id === product.id);
+    if (idx > -1) cart[idx].qty++;
+    else cart.push({ id:product.id, name:product.name, nameAr:product.nameAr, price:product.price, qty:1, emoji:product.emoji });
+    localStorage.setItem('lb_cart', JSON.stringify(cart));
+    updateCartCount();
+    const btn = e.target;
+    btn.textContent = currentLang === 'ar' ? 'تمت الإضافة ✓' : 'Added ✓';
+    setTimeout(() => { btn.textContent = currentLang === 'ar' ? 'أضيفي' : 'Add'; }, 1500);
+  }
+
+  function openProduct(id) {
+    window.location.href = 'product.html?id=' + id;
+  }
+
+  function filterCat(cat) {
+    currentCat = cat;
+    const buttons = document.querySelectorAll('#cat-list button');
+    buttons.forEach(b => {
+      const matches = b.getAttribute('onclick').includes(`'${cat}'`);
+      b.classList.toggle('active', matches);
+    });
+    renderProducts();
+  }
+
+  function renderProducts() {
+    const grid = document.getElementById('product-grid');
+    const filtered = currentCat === 'all' ? allProducts : allProducts.filter(p => p.category === currentCat);
+    const count = document.getElementById('results-count');
+    count.textContent = currentLang === 'ar'
+      ? `${filtered.length} منتج`
+      : `${filtered.length} product${filtered.length !== 1 ? 's' : ''}`;
+
+    if (filtered.length === 0) {
+      grid.innerHTML = `<div class="no-products" data-en="No products in this category yet." data-ar="لا توجد منتجات في هذه الفئة بعد.">No products in this category yet.</div>`;
+      return;
+    }
+
+    const imgBgs = ['img-bg-1','img-bg-2','img-bg-3','img-bg-4','img-bg-5'];
+    grid.innerHTML = filtered.map((p, i) => {
+      // Logic for Image or Emoji
+      const imageDisplay = (p.emoji && p.emoji.includes('http')) 
+        ? `<img src="${p.emoji}" alt="${p.name}">` 
+        : (p.emoji || catIcons[p.category] || '🌸');
+
+      return `
+        <div class="product-card" onclick="openProduct('${p.id}')">
+          <div class="product-img ${imgBgs[i % imgBgs.length]}">
+            ${imageDisplay}
+            <div class="product-img-overlay">
+              <span class="quick-view" data-en="View Details" data-ar="عرض التفاصيل">${currentLang === 'ar' ? 'عرض التفاصيل' : 'View Details'}</span>
+            </div>
+          </div>
+          ${p.badge ? `<div class="product-badge">${currentLang === 'ar' ? (p.badgeAr||p.badge) : p.badge}</div>` : ''}
+          <div class="product-info">
+            <div class="product-category">${currentLang === 'ar' ? (catLabels.ar[p.category]||p.category) : (catLabels.en[p.category]||p.category)}</div>
+            <div class="product-name">${currentLang === 'ar' ? (p.nameAr||p.name) : p.name}</div>
+            <div class="product-price">
+              <span>${p.price} <span style="font-size:11px;opacity:0.7">${currentLang === 'ar' ? 'ج.م' : 'EGP'}</span></span>
+              <button class="add-to-cart-quick" onclick="addToCart(${JSON.stringify(p).replace(/"/g,'&quot;')}, event)">${currentLang === 'ar' ? 'أضيفي' : 'Add'}</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  async function loadProducts() {
+    const grid = document.getElementById('product-grid');
+    try {
+      const res = await fetch(`${APPS_SCRIPT_URL}?action=getProducts`);
+      const data = await res.json();
+      allProducts = data.products || [];
+
+      const params = new URLSearchParams(window.location.search);
+      const catParam = params.get('cat');
+      if (catParam) {
+        currentCat = catParam;
+        document.querySelectorAll('#cat-list button').forEach(b => {
+          const matches = b.getAttribute('onclick')?.includes(`'${catParam}'`);
+          b.classList.toggle('active', matches);
+        });
+      }
+      renderProducts();
+    } catch(err) {
+      allProducts = getDemoProducts();
+      renderProducts();
+    }
+  }
+
+  function getDemoProducts() {
+    return [
+      { id:'p001', name:'Garden Rose Bouquet', nameAr:'باقة ورد الحديقة', category:'bouquets', price:250, emoji:'💐', badge:'Bestseller', badgeAr:'الأكثر مبيعاً' },
+      { id:'p002', name:'Lavender Dream', nameAr:'حلم اللافندر', category:'bouquets', price:180, emoji:'💜' },
+      { id:'p003', name:'Luxury Red Roses', nameAr:'ورد أحمر فاخر', category:'special-bouquets', price:450, emoji:'🌹', badge:'Premium', badgeAr:'فاخر' },
+      { id:'p004', name:'White Elegance', nameAr:'أناقة بيضاء', category:'special-bouquets', price:380, emoji:'🤍' },
+      { id:'p005', name:'Pampas & Ruscus', nameAr:'بامباس وروسكوس', category:'dried-flowers', price:220, emoji:'🌾' },
+      { id:'p006', name:'Desert Rose Bundle', nameAr:'باقة وردة الصحراء', category:'dried-flowers', price:160, emoji:'🌵' },
+      { id:'p007', name:'Romantic Gift Box', nameAr:'صندوق هدايا رومانسي', category:'gift-sets', price:550, emoji:'🎁', badge:'New', badgeAr:'جديد' },
+      { id:'p008', name:'Mini Flower Set', nameAr:'مجموعة زهور صغيرة', category:'gift-sets', price:300, emoji:'🎀' },
+      { id:'p009', name:'Autumn Wreath', nameAr:'إكليل الخريف', category:'seasonal', price:320, emoji:'🍂' },
+      { id:'p010', name:'Spring Meadow', nameAr:'مرج الربيع', category:'seasonal', price:280, emoji:'🌼' },
+    ];
+  }
+
+  updateCartCount();
+  loadProducts();
+  setLang(currentLang);
+</script>
+</body>
+</html>
