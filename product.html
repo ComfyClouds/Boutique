@@ -6,7 +6,17 @@
   <title>Product – Lovers Boutique</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Lato:wght@300;400&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
   <style>
-    :root { --cream:#F5EFE0;--warm-white:#FAF6EE;--bark:#6B4F35;--moss:#6B7A5A;--clay:#B07D5C;--sand:#D4B896;--charcoal:#2C2416;--gold:#C9A84C; }
+   :root {
+      /* Strawberry Milk Palette */
+      --cream: #FFF1F3;        /* Pale creamy pink */
+      --warm-white: #FFEAEE;   /* Soft strawberry milk */
+      --bark: #724A51;         /* Espresso Rose */
+      --moss: #C49BA2;         /* Dusty Rose */
+      --clay: #EFA8B6;         /* Strawberry Clay */
+      --sand: #F7C8D1;         /* Soft Petal pink */
+      --charcoal: #3D292C;     /* Dark Berry-Charcoal */
+      --gold: #D4AF37;         /* Classic gold accent */
+    }
     *{margin:0;padding:0;box-sizing:border-box;}
     body{background:var(--warm-white);color:var(--charcoal);font-family:'Lato',sans-serif;font-weight:300;}
     body.ar{font-family:'Amiri',serif;direction:rtl;}
@@ -147,6 +157,8 @@
         return acc;
     }, {});
 
+    const hasOptions = Object.keys(grouped).length > 0;
+    
     const optionsHtml = Object.keys(grouped).map(cat => `
         <div class="opt-group">
             <label class="opt-label">${cat}</label>
@@ -164,6 +176,19 @@
         ? `<img src="${p.emoji}" alt="${name}">` 
         : p.emoji || '🌸';
 
+    // Build Customizer Box ONLY if there are options or if it is a Special Bouquet
+    const customizerHtml = (hasOptions || isSpecial) ? `
+      <div class="customizer-box">
+        ${optionsHtml}
+        ${isSpecial ? `
+            <div class="opt-group">
+                <label class="opt-label">${currentLang === 'ar' ? 'حكاية الورد' : 'The Story'}</label>
+                <textarea class="opt-textarea" id="item-note" placeholder="${currentLang === 'ar' ? 'اكتبي الحكاية هنا...' : 'Write the story here...'}"></textarea>
+            </div>
+        ` : ''}
+      </div>
+    ` : '';
+
     document.getElementById('page-content').innerHTML = `
       <div class="product-page">
         <div class="product-gallery"><div class="main-image">${media}</div></div>
@@ -172,15 +197,7 @@
           <div class="product-price-big"><span id="display-price">${p.price}</span> <span>EGP</span></div>
           <p class="product-desc">${desc || ''}</p>
           
-          <div class="customizer-box">
-            ${optionsHtml}
-            ${isSpecial ? `
-                <div class="opt-group">
-                    <label class="opt-label">${currentLang === 'ar' ? 'حكاية الورد' : 'The Story'}</label>
-                    <textarea class="opt-textarea" id="item-note" placeholder="${currentLang === 'ar' ? 'اكتبي الحكاية هنا...' : 'Write the story here...'}"></textarea>
-                </div>
-            ` : ''}
-          </div>
+          ${customizerHtml}
 
           <div class="qty-section">
             <div class="opt-label">${currentLang === 'ar' ? 'الكمية' : 'Quantity'}</div>
@@ -200,7 +217,6 @@
     basePrice = p.price;
     updatePrice();
   }
-
   async function loadData() {
     const id = new URLSearchParams(window.location.search).get('id');
     try {
