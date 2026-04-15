@@ -18,6 +18,7 @@
       --charcoal: #3D292C;     /* Dark Berry: Near-black with a hint of rose for main text */
       --gold: #D4AF37;         /* Kept gold, as it looks beautiful with strawberry pinks */
       --bcream: #fffbf7;
+      --white: #ffffff;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -206,8 +207,8 @@
       left: 50%;
       transform: translateX(-50%);
       font-family: Georgia, serif;
-      font-size: 13px;
-      color: rgba(255, 255, 255, 0.5);
+      font-size: 26px;
+      color: var(--bark);
       letter-spacing: 8px;
       font-style: italic;
       z-index: 5;
@@ -219,7 +220,7 @@
         height: 100%;
         position: absolute;
         top: 0; left: 0;
-        background: var(--bcream);
+        background: var(--white);
         opacity: 0.15;
         z-index: 2;
     }
@@ -227,9 +228,10 @@
     .Tale-name-vertical {
       writing-mode: vertical-rl;
       font-family: 'Cormorant Garamond', serif;
-      font-size: 13px;
+      font-size: 26px;
       letter-spacing: 6px;
-      color: rgba(255, 255, 255, 0.4);
+      font-style: italic;
+      color: var(--bark);
       text-transform: uppercase;
       position: absolute;
       right: 28px;
