@@ -7,15 +7,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Lato:wght@300;400&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
   <style>
    :root {
-      /* Strawberry Milk Palette */
-      --cream: #FFF1F3;        /* Pale creamy pink */
-      --warm-white: #FFEAEE;   /* Soft strawberry milk */
-      --bark: #724A51;         /* Espresso Rose */
-      --moss: #C49BA2;         /* Dusty Rose */
-      --clay: #EFA8B6;         /* Strawberry Clay */
-      --sand: #F7C8D1;         /* Soft Petal pink */
-      --charcoal: #3D292C;     /* Dark Berry-Charcoal */
-      --gold: #D4AF37;         /* Classic gold accent */
+      --cream: #FFF1F3;
+      --warm-white: #FFEAEE;
+      --bark: #724A51;
+      --moss: #C49BA2;
+      --clay: #EFA8B6;
+      --sand: #F7C8D1;
+      --charcoal: #3D292C;
+      --gold: #D4AF37;
     }
     *{margin:0;padding:0;box-sizing:border-box;}
     body{background:var(--warm-white);color:var(--charcoal);font-family:'Lato',sans-serif;font-weight:300;}
@@ -44,7 +43,6 @@
     .product-name-big{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,4vw,48px);font-weight:300;line-height:1.1;}
     .product-price-big{font-size:28px;color:var(--bark);font-family:'Cormorant Garamond',serif;}
 
-    /* CUSTOMIZER */
     .customizer-box { background: rgba(107,79,53,0.05); padding: 20px; border-radius: 4px; display: flex; flex-direction: column; gap: 15px; margin-top: 10px; }
     .opt-group { display: flex; flex-direction: column; gap: 6px; }
     .opt-label { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--clay); font-weight: bold; }
@@ -53,8 +51,8 @@
         background: white; font-family: inherit; font-size: 14px;
     }
     .opt-textarea { height: 80px; resize: none; }
+    .opt-textarea.error { border-color: #C94C4C; background: #fff5f5; }
 
-    /* QTY */
     .qty-section{display:flex;flex-direction:column;gap:12px;margin: 10px 0;}
     .qty-control{display:flex;align-items:center;gap:0;width:fit-content;border:1px solid rgba(107,79,53,0.25);}
     .qty-btn{background:none;border:none;width:40px;height:40px;cursor:pointer;font-size:18px;color:var(--bark);}
@@ -63,9 +61,8 @@
     .add-to-cart-btn{background:var(--bark);color:var(--cream);border:none;padding:18px;cursor:pointer;font-size:11px;letter-spacing:3px;text-transform:uppercase;width:100%;transition: 0.3s;}
     .add-to-cart-btn:hover{background:var(--charcoal);}
 
-    #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #C94C4C; color: white; padding: 12px 24px; border-radius: 40px; font-size: 13px; z-index: 999; display: none; }
+    #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #3D292C; color: white; padding: 12px 24px; border-radius: 40px; font-size: 13px; z-index: 999; display: none; }
     footer{background:var(--bark);color:var(--cream);padding:32px 60px;text-align:center;font-size:12px;margin-top:60px;}
-    
     .loading { text-align:center; padding:100px; font-size:20px; color:var(--clay); font-style:italic; }
 
     @media(max-width:800px){
@@ -127,6 +124,13 @@
     if (product) renderProduct();
   }
 
+  function showToast(en, ar) {
+    const el = document.getElementById('toast');
+    el.textContent = currentLang === 'ar' ? ar : en;
+    el.style.display = 'block';
+    setTimeout(() => { el.style.display = 'none'; }, 3000);
+  }
+
   function changeQty(delta) {
     currentQty = Math.max(1, currentQty + delta);
     const el = document.getElementById('qty-display');
@@ -176,7 +180,6 @@
         ? `<img src="${p.emoji}" alt="${name}">` 
         : p.emoji || '🌸';
 
-    // Build Customizer Box ONLY if there are options or if it is a Special Bouquet
     const customizerHtml = (hasOptions || isSpecial) ? `
       <div class="customizer-box">
         ${optionsHtml}
@@ -217,6 +220,7 @@
     basePrice = p.price;
     updatePrice();
   }
+
   async function loadData() {
     const id = new URLSearchParams(window.location.search).get('id');
     try {
@@ -233,38 +237,61 @@
 
   function handleAddToCart() {
     const isSpecial = product.category === 'special-bouquets';
-    const noteEl = document.getElementById('item-note');
-    if (isSpecial && (!noteEl || noteEl.value.trim() === "")) {
-        const t = document.getElementById('toast');
-        t.textContent = currentLang === 'ar' ? "اكتبي الحكاية عشان نرسمها على الكارت" : "Write the story to draw it on the card";
-        t.style.display = 'block';
-        setTimeout(() => t.style.display = 'none', 3000);
-        return;
-    }
-    let specs = [];
-    document.querySelectorAll('.opt-select').forEach(sel => {
-        specs.push(`${sel.dataset.cat}: ${sel.value}`);
-    });
-    if (noteEl && noteEl.value) specs.push(`Note: ${noteEl.value}`);
+    let noteValue = "";
 
-    const cartItem = {
-        id: product.id + '-' + Date.now(),
-        baseId: product.id,
-        name: currentLang === 'ar' ? (product.nameAr || product.name) : product.name,
-        price: parseFloat(document.getElementById('display-price').textContent),
-        qty: currentQty,
-        specifications: specs.join(' | '),
-        emoji: product.emoji
-    };
+    if (isSpecial) {
+        const noteEl = document.getElementById('item-note');
+        noteValue = noteEl.value.trim();
+        if (!noteValue) {
+            noteEl.classList.add('error');
+            showToast("Please write the story first", "يرجى كتابة حكاية الورد أولاً");
+            return;
+        }
+        noteEl.classList.remove('error');
+    }
+
     const cart = JSON.parse(localStorage.getItem('lb_cart') || '[]');
-    cart.push(cartItem);
+    
+    const specs = [];
+    document.querySelectorAll('.opt-select').forEach(sel => {
+        const label = sel.closest('.opt-group').querySelector('.opt-label').textContent;
+        specs.push(`${label}: ${sel.value}`);
+    });
+    
+    // Add note to specs if present so it's part of the unique comparison
+    if (noteValue) specs.push(`Story: ${noteValue}`);
+    const currentSpecsString = specs.join(' | ');
+
+    const existingItem = cart.find(item => 
+        item.baseId === product.id && 
+        item.specifications === currentSpecsString
+    );
+
+    if (existingItem) {
+        existingItem.qty += currentQty;
+    } else {
+        const cartItem = {
+            id: product.id + '-' + Date.now(),
+            baseId: product.id,
+            name: currentLang === 'ar' ? (product.nameAr || product.name) : product.name,
+            price: parseFloat(document.getElementById('display-price').textContent),
+            qty: currentQty,
+            specifications: currentSpecsString,
+            emoji: product.emoji
+        };
+        cart.push(cartItem);
+    }
+
     localStorage.setItem('lb_cart', JSON.stringify(cart));
-    window.location.href = 'cart.html';
+    updateCartCount();
+    showToast("Added to cart", "تم الإضافة للسلة");
   }
 
   function updateCartCount() {
     const cart = JSON.parse(localStorage.getItem('lb_cart') || '[]');
-    document.getElementById('cart-count').textContent = cart.reduce((s,i)=>s+i.qty,0);
+    const count = cart.reduce((s,i)=>s+i.qty,0);
+    const el = document.getElementById('cart-count');
+    if(el) el.textContent = count;
   }
 
   updateCartCount();
