@@ -7,11 +7,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Lato:wght@300;400&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
   <style>
-:root {
+ :root {
+
       /* Lighter Strawberry Cream Palette */
       --cream: #FFFBFC;        /* Bright Milk: Nearly white with a tiny drop of pink */
       --warm-white: #FFF5F7;   /* Pale Frosting: Ultra-light pink for secondary sections */
-      --bark: #936C72;         /* Soft Cocoa: Lightened brown-rose for headers and contrast */
+      --bark:   #ffcfdf;         /* Soft Cocoa: Lightened brown-rose for headers and contrast */
       --moss: #DDBFC4;         /* Muted Blush: Gentle, desaturated pink for borders or dividers */
       --clay: #F9C5D1;         /* Fresh Strawberry: A bright, cheerful light pink */
       --sand: #FDE2E8;         /* Silk Petal: Very soft, high-key accent pink */
@@ -19,8 +20,8 @@
       --gold: #E5C76B;         /* Soft Gold: A brighter, paler gold to match the higher key */
       --bcream: #fffbf7;
       --white: #ffffff;
+      --darkerpink: #db96a1;
     }
-
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -51,7 +52,7 @@
     .lang-btn {
       background: transparent;
       border: 1px solid var(--bark);
-      color: var(--bark);
+      color: var(--darkerpink);
       padding: 5px 14px;
       font-size: 11px;
       letter-spacing: 1.5px;
@@ -62,7 +63,7 @@
     }
     .lang-btn.active, .lang-btn:hover {
       background: var(--bark);
-      color: var(--cream);
+      color: var(--darkerpink);
     }
 
     /* Hero */
@@ -105,7 +106,7 @@
       font-size: 10px;
       letter-spacing: 4px;
       text-transform: uppercase;
-      color: var(--clay);
+      color: var(--darkerpink);
       margin-bottom: 24px;
       display: flex;
       align-items: center;
@@ -116,7 +117,7 @@
       display: inline-block;
       width: 30px;
       height: 1px;
-      background: var(--clay);
+      background: var(--darkerpink);
     }
     body.ar .Tale-tag { flex-direction: row-reverse; }
     body.ar .Tale-tag::before { display: none; }
@@ -138,7 +139,7 @@
     }
     .hero-title em {
       font-style: italic;
-      color: var(--bark);
+      color: var(--darkerpink);
     }
 
     .hero-subtitle {
@@ -152,7 +153,7 @@
 
     .intro-line {
       font-style: italic;
-      color: var(--bark);
+      color: var(--darkerpink);
       display: block;
       margin-bottom: 8px;
     }
@@ -161,11 +162,11 @@
       display: inline-flex;
       align-items: center;
       gap: 16px;
-      background: var(--bark);
-      color: var(--cream);
+      background: var(--darkerpink);
+      color: var(--bark);
       padding: 16px 36px;
       text-decoration: none;
-      font-size: 11px;
+      font-size: 13px;
       letter-spacing: 3px;
       text-transform: uppercase;
       transition: all 0.4s ease;
@@ -223,7 +224,7 @@
         top: 0; left: 0;
         background: var(--white);
         opacity: 0.01;
-        z-index: 2;
+        z-index: 1;
     }
 
     .Tale-name-vertical {
@@ -246,7 +247,7 @@
       position: absolute;
       bottom: 0; left: 0; right: 0;
       height: 4px;
-      background: linear-gradient(to right, var(--clay), var(--gold), var(--moss));
+      background: linear-gradient(to right, var(--darkerpink),var(--clay), var(--warm-white), var(--clay), var(--darkerpink));
       z-index: 10;
     }
 
@@ -263,13 +264,13 @@
       z-index: 10;
     }
     .scroll-hint span {
-      font-size: 9px;
+      font-size: 11px;
       letter-spacing: 3px;
       text-transform: uppercase;
-      color: var(--bark);
+      color: var(--darkerpink);
     }
     .scroll-line {
-      width: 1px;
+      width: 3px;
       height: 40px;
       background: var(--bark);
       animation: scrollDrop 1.8s ease infinite;
@@ -306,7 +307,7 @@
       margin-bottom: 24px;
       color: var(--charcoal);
     }
-    .story-text h2 em { font-style: italic; color: var(--bark); }
+    .story-text h2 em { font-style: italic; color: var(--darkerpink); }
 
     .story-text p {
       font-size: 14px;
@@ -335,7 +336,7 @@
       font-family: 'Cormorant Garamond', serif;
       font-size: 18px;
       margin-bottom: 8px;
-      color: var(--bark);
+      color: var(--darkerpink);
     }
     .story-card p { font-size: 12px; color: var(--charcoal); opacity: 0.7; line-height: 1.6; }
 
@@ -352,7 +353,7 @@
       font-size: 10px;
       letter-spacing: 4px;
       text-transform: uppercase;
-      color: var(--clay);
+      color: var(--darkerpink);
       margin-bottom: 16px;
       display: block;
     }
@@ -404,7 +405,7 @@
     .cat-name-ar {
       font-family: 'Amiri', serif;
       font-size: 16px;
-      color: var(--clay);
+      color: var(--darkerpink);
       display: block;
     }
 
@@ -449,14 +450,14 @@
       letter-spacing: 0.5px;
     }
     .cta-banner .shop-now-btn {
-      background: var(--clay);
+      background: var(--charcoal);
       position: relative; z-index: 1;
     }
-    .cta-banner .shop-now-btn:hover { background: var(--sand); color: var(--charcoal); }
+    .cta-banner .shop-now-btn:hover { background: var(--darkerpink); color: var(--bark); }
 
     footer {
       background: var(--bark);
-      color: var(--cream);
+      color: var(--charcoal);
       padding: 40px 80px;
       display: flex;
       justify-content: space-between;
