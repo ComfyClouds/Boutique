@@ -6,7 +6,7 @@
   <title>Checkout – Lovers Boutique</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Lato:wght@300;400&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
   <style>
-     :root {
+      :root {
       /* Strawberry Milk Palette */
       --cream: #FFF1F3;        /* The "Milk": Pale, creamy, slightly cool pink background */
       --warm-white: #FFEAEE;   /* Slightly richer strawberry milk accent */
@@ -169,9 +169,7 @@
   let currentLang = localStorage.getItem('lb_lang') || 'en';
   let selectedPayment = 'cash';
   let currentDeliveryFee = 60;
-  let discountAmount = 0;
-  let isFreeDelivery = false;
-  let appliedPromoCode = "";
+  let promoData = null; // Store promo object: {code, type, value}
 
   const cityData = {
     "Cairo": { fee: 60, minDays: 3 }, "Giza": { fee: 60, minDays: 3 }, "Helwan": { fee: 65, minDays: 3 },
@@ -211,12 +209,52 @@
 
   function getCart() { return JSON.parse(localStorage.getItem('lb_cart') || '[]'); }
 
+  async function applyPromo() {
+    const code = document.getElementById('promoInput').value.trim();
+    if (!code) return;
+
+    const cart = getCart();
+    if (cart.length === 0) return;
+    
+    // We validate based on the first item's ID (the backend handles the row-by-row check)
+    const testId = cart[0].baseId || cart[0].id.split('-')[0];
+
+    try {
+      const res = await fetch(`${APPS_SCRIPT_URL}?action=validatePromo&code=${code}&id=${testId}`);
+      const data = await res.json();
+
+      if (data.success) {
+        promoData = { code: code, type: data.type, value: data.value };
+        showToast("Discount applied!", "تم تطبيق الخصم!", "success");
+      } else {
+        promoData = null;
+        showToast(data.msg, data.msg, "error");
+      }
+      renderSummary();
+    } catch (e) {
+      showToast("Error verifying code", "خطأ في التحقق", "error");
+    }
+  }
+
   function renderSummary() {
     const cart = getCart();
     const priceLbl = currentLang === 'ar' ? 'ج.م' : 'EGP';
     const subtotal = cart.reduce((s,i)=>s+i.price*i.qty,0);
-    const activeDel = isFreeDelivery ? 0 : currentDeliveryFee;
     
+    let discount = 0;
+    let activeDel = currentDeliveryFee;
+
+    // Apply Promo Math
+    if (promoData) {
+        if (promoData.type === 'percentage') {
+            discount = subtotal * (promoData.value / 100);
+        } else if (promoData.type === 'flat') {
+            discount = promoData.value;
+        } else if (promoData.type === 'free_delivery') {
+            activeDel = 0;
+        }
+    }
+
     document.getElementById('co-items').innerHTML = cart.map(item => {
       const name = currentLang === 'ar' ? (item.nameAr||item.name) : item.name;
       const displayImg = item.emoji || item.image || '🌸';
@@ -228,44 +266,11 @@
     }).join('');
     
     let rowsHtml = `<div class="summary-row"><span>Subtotal</span><span>${subtotal} ${priceLbl}</span></div>`;
-    if (discountAmount > 0) rowsHtml += `<div class="summary-row" style="color:var(--moss);"><span>Discount</span><span>-${discountAmount} ${priceLbl}</span></div>`;
-    rowsHtml += `<div class="summary-row"><span>Delivery</span><span>${isFreeDelivery ? 'FREE' : activeDel + ' ' + priceLbl}</span></div>`;
+    if (discount > 0) rowsHtml += `<div class="summary-row" style="color:var(--moss);"><span>Discount</span><span>-${Math.round(discount)} ${priceLbl}</span></div>`;
+    rowsHtml += `<div class="summary-row"><span>Delivery</span><span>${activeDel === 0 ? 'FREE' : activeDel + ' ' + priceLbl}</span></div>`;
     
     document.getElementById('co-rows').innerHTML = rowsHtml;
-    document.getElementById('co-total').textContent = `${subtotal + activeDel - discountAmount} ${priceLbl}`;
-  }
-
-  async function applyPromo() {
-    const code = document.getElementById('promoInput').value.trim();
-    if (!code) return;
-    try {
-      const res = await fetch(`${APPS_SCRIPT_URL}?action=validatePromo&code=${code}`);
-      const data = await res.json();
-      if (data.success) {
-        const cart = getCart();
-        const allowedIds = String(data.applicableProducts).split(',').filter(x => x);
-        const eligibleItems = (data.applicableProducts === 'all') 
-          ? cart 
-          : cart.filter(item => allowedIds.includes(String(item.id).toLowerCase().replace(/\s/g, '')));
-
-        if (eligibleItems.length === 0) {
-          showToast("Not applicable to these products", "هذا الكود لا يشمل المنتجات المختارة", "error");
-          return;
-        }
-
-        appliedPromoCode = code;
-        isFreeDelivery = (data.type === 'free_delivery');
-        const eligibleSubtotal = eligibleItems.reduce((s, i) => s + (i.price * i.qty), 0);
-        discountAmount = (data.type === 'percentage') ? (eligibleSubtotal * data.value / 100) : (data.type === 'flat' ? Math.min(data.value, eligibleSubtotal) : 0);
-        
-        showToast("Promo code applied successfully", "تم تطبيق كود الخصم بنجاح", "success");
-        renderSummary();
-      } else { 
-        showToast("Invalid promo code", "كود خصم غير صحيح", "error"); 
-      }
-    } catch (e) { 
-      showToast("Error checking code", "خطأ في التحقق من الكود", "error"); 
-    }
+    document.getElementById('co-total').textContent = `${Math.max(0, Math.round(subtotal + activeDel - discount))} ${priceLbl}`;
   }
 
   async function placeOrder() {
@@ -287,21 +292,24 @@
     }
 
     const cart = getCart();
-    if (cart.length === 0) {
-      showToast("Your cart is empty", "سلة المشتريات فارغة", "error");
-      return;
-    }
+    if (cart.length === 0) return;
 
     const subtotal = cart.reduce((s,i)=>s+i.price*i.qty,0);
-    const delivery = isFreeDelivery ? 0 : currentDeliveryFee;
-    const finalTotal = subtotal + delivery - discountAmount;
+    let discount = 0;
+    let delivery = currentDeliveryFee;
+    
+    if (promoData) {
+        if (promoData.type === 'percentage') discount = subtotal * (promoData.value / 100);
+        else if (promoData.type === 'flat') discount = promoData.value;
+        else if (promoData.type === 'free_delivery') delivery = 0;
+    }
 
-    // GENERATE UNIQUE ID ONCE
+    const finalTotal = Math.max(0, Math.round(subtotal + delivery - discount));
     const sharedOrderId = "LB-" + Date.now();
 
     const orderData = {
       action: 'placeOrder',
-      orderId: sharedOrderId, // Sending the unique ID to your sheet
+      orderId: sharedOrderId,
       firstName: document.getElementById('firstName').value,
       lastName: document.getElementById('lastName').value,
       phone: document.getElementById('phone').value,
@@ -314,22 +322,19 @@
       items: JSON.stringify(cart),
       subtotal: subtotal,
       delivery: delivery,
-      discount: discountAmount,
+      discount: Math.round(discount),
       total: finalTotal,
-      promoCode: appliedPromoCode
+      promoCode: promoData ? promoData.code : ''
     };
 
-    // SAVE DATA FOR THANKS PAGE (Using the same shared ID)
-    const thanksData = {
+    localStorage.setItem('lb_last_order', JSON.stringify({
       orderId: sharedOrderId,
       name: orderData.firstName,
       items: cart,
       total: finalTotal
-    };
-    localStorage.setItem('lb_last_order', JSON.stringify(thanksData));
+    }));
 
     document.getElementById('processing-overlay').classList.add('show');
-    showToast("Processing your order...", "جاري معالجة طلبك...", "success");
 
     try {
       await fetch(APPS_SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(orderData) });
