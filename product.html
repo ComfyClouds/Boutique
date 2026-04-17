@@ -6,17 +6,15 @@
   <title>Product – Petal Tale</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Lato:wght@300;400&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
   <style>
-  :root {
-
-      /* Lighter Strawberry Cream Palette */
-      --cream: #FFFBFC;        /* Bright Milk: Nearly white with a tiny drop of pink */
-      --warm-white: #FFF5F7;   /* Pale Frosting: Ultra-light pink for secondary sections */
-      --bark:   #ffcfdf;         /* Soft Cocoa: Lightened brown-rose for headers and contrast */
-      --moss: #DDBFC4;         /* Muted Blush: Gentle, desaturated pink for borders or dividers */
-      --clay: #F9C5D1;         /* Fresh Strawberry: A bright, cheerful light pink */
-      --sand: #FDE2E8;         /* Silk Petal: Very soft, high-key accent pink */
-      --charcoal: #524144;     /* Deep Taupe: Softened dark tone for readability without harshness */
-      --gold: #E5C76B;         /* Soft Gold: A brighter, paler gold to match the higher key */
+    :root {
+      --cream: #FFFBFC;
+      --warm-white: #FFF5F7;
+      --bark: #ffcfdf;
+      --moss: #DDBFC4;
+      --clay: #F9C5D1;
+      --sand: #FDE2E8;
+      --charcoal: #524144;
+      --gold: #E5C76B;
       --bcream: #fffbf7;
       --white: #ffffff;
       --darkerpink: #db96a1;
@@ -27,11 +25,11 @@
     *{margin:0;padding:0;box-sizing:border-box;}
     body{background:var(--creamyy);color:var(--charcoal);font-family:'Lato',sans-serif;font-weight:300;}
     body.ar{font-family:'Amiri',serif;direction:rtl;}
+    
     nav{background:var(--warm-white);border-bottom:1px solid rgba(107,79,53,0.12);padding:20px 60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:90;}
     .nav-brand{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;text-decoration:none;color:var(--charcoal);}
     .nav-brand em { font-style:italic; color:var(--darkerpink); }
     .nav-actions{display:flex;gap:20px;align-items:center;}
-    .nav-home { font-size:12px; letter-spacing:1.5px; text-transform:uppercase; text-decoration:none; color:var(--clay); }
     .cart-btn{background:var(--bark);color:var(--cream);border:none;padding:10px 22px;cursor:pointer;font-size:12px;letter-spacing:1.5px;font-family:'Lato',sans-serif;display:flex;align-items:center;gap:8px;text-decoration:none;}
     .cart-btn:hover { background:var(--darkerpink); }
     .cart-count{background:var(--clay);color:#fff;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:bold;}
@@ -43,11 +41,36 @@
     .breadcrumb a{color:var(--darkerpink);text-decoration:none;}
 
     .product-page{display:grid;grid-template-columns:1fr 1fr;gap:0;min-height:70vh;max-width:1200px;margin:0 auto;padding:40px 60px 80px;}
+    
+    /* --- GALLERY FIXES --- */
     .product-gallery{padding-right:60px;}
     body.ar .product-gallery{padding-right:0;padding-left:60px;}
-    .main-image{width:100%;aspect-ratio:1;background:var(--creamyy);display:flex;align-items:center;justify-content:center;font-size:100px;margin-bottom:16px;position:relative;overflow:hidden;}
-    .main-image img{width:100%;height:100%;object-fit:cover;}
     
+    .main-image{
+        width:100%;
+        aspect-ratio: 1 / 1;
+        background: #fff;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        margin-bottom:16px;
+        position:relative;
+        overflow:hidden;
+        border-radius: 8px;
+        border: 1px solid rgba(0,0,0,0.02);
+    }
+    .main-image img{
+        width:100%;
+        height:100%;
+        object-fit: contain; /* Prevents cropping the bouquet */
+        padding: 15px; /* Adds breathing room around the product */
+    }
+    .emoji-display {
+        font-size: 100px;
+        line-height: 1;
+    }
+    /* -------------------- */
+
     .product-details{display:flex;flex-direction:column;gap:20px;padding-left:20px;}
     body.ar .product-details{padding-left:0;padding-right:20px;}
     .product-name-big{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,4vw,48px);font-weight:300;line-height:1.1;}
@@ -186,9 +209,10 @@
         </div>
     `).join('');
 
+    /* Updated Media Rendering */
     const media = (p.emoji && p.emoji.includes('http')) 
         ? `<img src="${p.emoji}" alt="${name}">` 
-        : p.emoji || '🌸';
+        : `<span class="emoji-display">${p.emoji || '🌸'}</span>`;
 
     const customizerHtml = (hasOptions || isSpecial) ? `
       <div class="customizer-box">
@@ -268,7 +292,6 @@
         specs.push(`${label}: ${sel.value}`);
     });
     
-    // Add note to specs if present so it's part of the unique comparison
     if (noteValue) specs.push(`Story: ${noteValue}`);
     const currentSpecsString = specs.join(' | ');
 
