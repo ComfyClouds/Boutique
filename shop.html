@@ -46,7 +46,7 @@
     .nav-actions { display:flex; gap:20px; align-items:center; }
     .nav-home { font-size:12px; letter-spacing:1.5px; text-transform:uppercase; text-decoration:none; color:var(--clay); }
     .cart-btn {
-      background:var(--bark); color:var(--cream);
+      background:var(--darkerpink); color:var(--cream);
       border:none; padding:10px 22px; cursor:pointer;
       font-size:12px; letter-spacing:1.5px; font-family:'Lato',sans-serif;
       display:flex; align-items:center; gap:8px;
@@ -61,7 +61,7 @@
     .lang-toggle { display:flex; gap:6px; }
     .lang-btn {
       background:transparent; border:1px solid var(--bark);
-      color:var(--bark); padding:5px 12px; font-size:11px;
+      color:var(--darkerpink); padding:5px 12px; font-size:11px;
       letter-spacing:1.5px; cursor:pointer; font-family:'Lato',sans-serif;
       transition:all 0.3s;
     }
@@ -69,7 +69,7 @@
 
     /* PAGE HEADER */
     .page-header {
-      background: var(--creamyy);
+      background: var(--darkerpink);
       padding: 60px 60px 40px;
       border-bottom: 1px solid rgba(107,79,53,0.1);
     }
@@ -77,7 +77,7 @@
       font-size:11px; letter-spacing:2px; text-transform:uppercase;
       color:var(--bark); margin-bottom:16px;
     }
-    .breadcrumb a { color:var(--bark); text-decoration:none; }
+    .breadcrumb a { color:var(--darkerpink); text-decoration:none; }
     .page-header h1 {
       font-family:'Cormorant Garamond',serif;
       font-size:clamp(36px,5vw,56px); font-weight:300;
@@ -102,7 +102,7 @@
     }
     .sidebar-title {
       font-size:10px; letter-spacing:3px; text-transform:uppercase;
-      color:var(--bark); margin-bottom:24px;
+      color:var(--darkerpink); margin-bottom:24px;
     }
     .cat-list { list-style:none; display:flex; flex-direction:column; gap:4px; }
     .cat-list li button {
@@ -184,11 +184,14 @@
     .product-name {
       font-family:'Cormorant Garamond',serif; font-size:20px;
       font-weight:400; margin-bottom:10px; line-height:1.2;
-    }
-    .product-price {
-      font-size:15px; color:var(--charcoal); font-weight:400;
-      display:flex; align-items:center; justify-content:space-between;
-    }
+.product-price {
+  font-size: 15px; 
+  color: var(--charcoal); 
+  font-weight: 700; /* Changed from 400 to 700 */
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between;
+}
     .add-to-cart-quick {
       background:var(--darkerpink); color:var(--creamyy);
       border:none; padding:6px 14px; cursor:pointer;
