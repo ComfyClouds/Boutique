@@ -6,16 +6,22 @@
   <title>Shop – Petal Tale</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Lato:wght@300;400&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
   <style>
-    :root {
-      /* Strawberry Milk Palette */
-      --cream: #FFF1F3;        /* Pale creamy pink */
-      --warm-white: #FFEAEE;   /* Soft strawberry milk */
-      --bark: #724A51;         /* Espresso Rose */
-      --moss: #C49BA2;         /* Dusty Rose */
-      --clay: #EFA8B6;         /* Strawberry Clay */
-      --sand: #F7C8D1;         /* Soft Petal pink */
-      --charcoal: #3D292C;     /* Dark Berry-Charcoal */
-      --gold: #D4AF37;         /* Classic gold accent */
+     :root {
+
+      /* Lighter Strawberry Cream Palette */
+      --cream: #FFFBFC;        /* Bright Milk: Nearly white with a tiny drop of pink */
+      --warm-white: #FFF5F7;   /* Pale Frosting: Ultra-light pink for secondary sections */
+      --bark:   #ffcfdf;         /* Soft Cocoa: Lightened brown-rose for headers and contrast */
+      --moss: #DDBFC4;         /* Muted Blush: Gentle, desaturated pink for borders or dividers */
+      --clay: #F9C5D1;         /* Fresh Strawberry: A bright, cheerful light pink */
+      --sand: #FDE2E8;         /* Silk Petal: Very soft, high-key accent pink */
+      --charcoal: #524144;     /* Deep Taupe: Softened dark tone for readability without harshness */
+      --gold: #E5C76B;         /* Soft Gold: A brighter, paler gold to match the higher key */
+      --bcream: #fffbf7;
+      --white: #ffffff;
+      --darkerpink: #db96a1;
+      --darkerbtn: #3a2428;
+       --creamyy: #fffffd;
     }
     * { margin:0; padding:0; box-sizing:border-box; }
     body { background:var(--warm-white); color:var(--charcoal); font-family:'Lato',sans-serif; font-weight:300; }
@@ -59,19 +65,19 @@
       letter-spacing:1.5px; cursor:pointer; font-family:'Lato',sans-serif;
       transition:all 0.3s;
     }
-    .lang-btn.active, .lang-btn:hover { background:var(--bark); color:var(--cream); }
+    .lang-btn.active, .lang-btn:hover { background:var(--bark); color:var(--darkerpink); }
 
     /* PAGE HEADER */
     .page-header {
-      background: var(--cream);
+      background: var(--creamyy);
       padding: 60px 60px 40px;
       border-bottom: 1px solid rgba(107,79,53,0.1);
     }
     .breadcrumb {
       font-size:11px; letter-spacing:2px; text-transform:uppercase;
-      color:var(--clay); margin-bottom:16px;
+      color:var(--bark); margin-bottom:16px;
     }
-    .breadcrumb a { color:var(--clay); text-decoration:none; }
+    .breadcrumb a { color:var(--bark); text-decoration:none; }
     .page-header h1 {
       font-family:'Cormorant Garamond',serif;
       font-size:clamp(36px,5vw,56px); font-weight:300;
@@ -88,7 +94,7 @@
 
     /* SIDEBAR */
     .sidebar {
-      background:var(--cream);
+      background:var(--creamyy);
       border-right:1px solid rgba(107,79,53,0.1);
       padding:40px 32px;
       position:sticky; top:72px;
@@ -96,7 +102,7 @@
     }
     .sidebar-title {
       font-size:10px; letter-spacing:3px; text-transform:uppercase;
-      color:var(--clay); margin-bottom:24px;
+      color:var(--bark); margin-bottom:24px;
     }
     .cat-list { list-style:none; display:flex; flex-direction:column; gap:4px; }
     .cat-list li button {
