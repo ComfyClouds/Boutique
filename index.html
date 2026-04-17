@@ -8,16 +8,15 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Lato:wght@300;400&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
   <style>
  :root {
-
       /* Lighter Strawberry Cream Palette */
       --cream: #FFFBFC;        /* Bright Milk: Nearly white with a tiny drop of pink */
       --warm-white: #FFF5F7;   /* Pale Frosting: Ultra-light pink for secondary sections */
-      --bark:   #ffcfdf;         /* Soft Cocoa: Lightened brown-rose for headers and contrast */
-      --moss: #DDBFC4;         /* Muted Blush: Gentle, desaturated pink for borders or dividers */
-      --clay: #F9C5D1;         /* Fresh Strawberry: A bright, cheerful light pink */
-      --sand: #FDE2E8;         /* Silk Petal: Very soft, high-key accent pink */
-      --charcoal: #524144;     /* Deep Taupe: Softened dark tone for readability without harshness */
-      --gold: #E5C76B;         /* Soft Gold: A brighter, paler gold to match the higher key */
+      --bark:   #ffcfdf;          /* Soft Cocoa: Lightened brown-rose for headers and contrast */
+      --moss: #DDBFC4;          /* Muted Blush: Gentle, desaturated pink for borders or dividers */
+      --clay: #F9C5D1;          /* Fresh Strawberry: A bright, cheerful light pink */
+      --sand: #FDE2E8;          /* Silk Petal: Very soft, high-key accent pink */
+      --charcoal: #524144;      /* Deep Taupe: Softened dark tone for readability without harshness */
+      --gold: #E5C76B;          /* Soft Gold: A brighter, paler gold to match the higher key */
       --bcream: #fffbf7;
       --white: #ffffff;
       --darkerpink: #db96a1;
@@ -193,14 +192,16 @@
       align-items: center;
       justify-content: center;
       overflow: hidden;
+      background: var(--cream); /* Blends with your palette if image doesn't fill width */
     }
 
+    /* --- FIXED BANNER LOGIC --- */
     .hero-banner-img {
       width: 100%;
       height: 100%;
       position: absolute;
       top: 0; left: 0;
-      object-fit: cover;
+      object-fit: contain; /* FIX: Prevents cropping from sides */
       z-index: 1;
     }
 
@@ -507,7 +508,8 @@
       <h1 class="hero-title">
         <span data-en="Petal" data-ar="حكاية">Petal</span><br>
         <em><span data-en="Tale" data-ar="ورد">Tale</span></em>
-        <p class="hero-subtitle" 
+      </h1>
+      <p class="hero-subtitle" 
         data-en="<i><span class='intro-line'>Here, every flower is more than just a bloom…</span> It’s a feeling, carefully drawn and softly spoken. Each bouquet is crafted by hands that love art, and a heart that sees beauty in the smallest details.<br><br>We don’t just create flowers—we create moments, emotions, and stories that last.<br><br><strong>Drawn with love… just for you ♡</strong></i>" 
         data-ar="<i><span class='intro-line'>هنا، كل وردة مش مجرد شكل…</span> دي إحساس بيتترسم، وحكاية بتتقال من غير كلام. كل بوكيه معمول بإيدين بتحب الفن، وبقلب شايف الجمال في التفاصيل الصغيرة.<br><br>مش بنقدم ورد وبس، بنقدم لحظات، ومشاعر، وحكايات بتعيش.<br><br><strong>مرسوم بحب… مخصوص ليك ♡</strong></i>">
         
