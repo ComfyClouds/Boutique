@@ -112,7 +112,7 @@
 
     .customizer-box { background: rgba(107,79,53,0.05); padding: 20px; border-radius: 4px; display: flex; flex-direction: column; gap: 15px; margin-top: 10px; }
     .opt-group { display: flex; flex-direction: column; gap: 6px; }
-    .opt-label { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--clay); font-weight: bold; }
+    .opt-label { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--darkerpink); font-weight: bold; }
     .opt-select, .opt-textarea { 
         width: 100%; padding: 10px; border: 1px solid rgba(107,79,53,0.2); 
         background: white; font-family: inherit; font-size: 14px;
@@ -120,10 +120,62 @@
     .opt-textarea { height: 80px; resize: none; }
     .opt-textarea.error { border-color: #C94C4C; background: #fff5f5; }
 
-    .qty-section{display:flex;flex-direction:column;gap:12px;margin: 10px 0;}
-    .qty-control{display:flex;align-items:center;gap:0;width:fit-content;border:1px solid rgba(107,79,53,0.25);}
-    .qty-btn{background:none;border:none;width:40px;height:40px;cursor:pointer;font-size:18px;color:var(--bark);}
-    .qty-display{width:50px;height:40px;border:none;border-left:1px solid rgba(107,79,53,0.2);border-right:1px solid rgba(107,79,53,0.2);text-align:center;font-size:16px;background:transparent;}
+   .qty-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.qty-control {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  border: 1px solid var(--moss); /* Using a slightly darker border */
+  border-radius: 4px; /* Softens the look to match your brand */
+  overflow: hidden;
+}
+
+.qty-btn {
+  background: none;
+  border: none;
+  width: 45px;
+  height: 45px;
+  cursor: pointer;
+  font-size: 20px;
+  color: var(--charcoal); /* Changed from --bark for better visibility */
+  transition: background 0.2s, color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qty-btn:hover {
+  background: var(--warm-white);
+  color: var(--darkerpink);
+}
+
+.qty-display {
+  width: 50px;
+  height: 45px;
+  border: none;
+  border-left: 1px solid var(--moss);
+  border-right: 1px solid var(--moss);
+  text-align: center;
+  font-size: 16px;
+  font-family: 'Lato', sans-serif;
+  background: white; /* Subtle depth */
+  color: var(--charcoal);
+  /* Removes default arrows on some browsers */
+  -moz-appearance: textfield;
+}
+
+/* Removes arrows for Chrome/Safari */
+.qty-display::-webkit-outer-spin-button,
+.qty-display::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
     
     .add-to-cart-btn{background:var(--darkerpink);color:var(--cream);border:none;padding:18px;cursor:pointer;font-size:11px;letter-spacing:3px;text-transform:uppercase;width:100%;transition: 0.3s;}
     .add-to-cart-btn:hover{background:var(--charcoal);}
