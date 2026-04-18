@@ -6,37 +6,54 @@
   <title>Product – Petal Tale</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Lato:wght@300;400&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --cream: #FFFBFC;
-      --warm-white: #FFF5F7;
-      --bark: #ffcfdf;
-      --moss: #DDBFC4;
-      --clay: #F9C5D1;
-      --sand: #FDE2E8;
-      --charcoal: #524144;
-      --gold: #E5C76B;
-      --bcream: #fffbf7;
+     :root {
+
+      /* Lighter Strawberry Cream Palette */
+      --cream: #FFFBFC;        /* Bright Milk: Nearly white with a tiny drop of pink */
+      --warm-white: #FFF5F7;   /* Pale Frosting: Ultra-light pink for secondary sections */
+      --bark:   #ffcfdf;         /* Soft Cocoa: Lightened brown-rose for headers and contrast */
+      --moss: #DDBFC4;         /* Muted Blush: Gentle, desaturated pink for borders or dividers */
+      --clay: #F9C5D1;         /* Fresh Strawberry: A bright, cheerful light pink */
+      --sand: #FDE2E8;         /* Silk Petal: Very soft, high-key accent pink */
+      --charcoal: #524144;     /* Deep Taupe: Softened dark tone for readability without harshness */
+      --gold: #E5C76B;         /* Soft Gold: A brighter, paler gold to match the higher key */
       --white: #ffffff;
       --darkerpink: #db96a1;
       --darkerbtn: #3a2428;
-      --creamyy: #fffffd;
+       --bcream: #fffffd;
+       --black: #030000;
     }
 
     *{margin:0;padding:0;box-sizing:border-box;}
-    body{background:var(--creamyy);color:var(--charcoal);font-family:'Lato',sans-serif;font-weight:300;}
+    body{background:var(--bcream);color:var(--charcoal);font-family:'Lato',sans-serif;font-weight:300;}
     body.ar{font-family:'Amiri',serif;direction:rtl;}
     
-    nav{background:var(--warm-white);border-bottom:1px solid rgba(107,79,53,0.12);padding:20px 60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:90;}
+    nav{background:var(--bcream);border-bottom:1px solid rgba(107,79,53,0.12);padding:20px 60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:90;}
     .nav-brand{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;text-decoration:none;color:var(--charcoal);}
     .nav-brand em { font-style:italic; color:var(--darkerpink); }
     .nav-actions{display:flex;gap:20px;align-items:center;}
-    .cart-btn{background:var(--bark);color:var(--cream);border:none;padding:10px 22px;cursor:pointer;font-size:12px;letter-spacing:1.5px;font-family:'Lato',sans-serif;display:flex;align-items:center;gap:8px;text-decoration:none;}
-    .cart-btn:hover { background:var(--darkerpink); }
-    .cart-count{background:var(--clay);color:#fff;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:bold;}
-    .lang-toggle{display:flex;gap:6px;}
-    .lang-btn{background:transparent;border:1px solid var(--bark);color:var(--darkerpink);padding:5px 12px;font-size:11px;letter-spacing:1.5px;cursor:pointer;font-family:'Lato',sans-serif;}
-    .lang-btn.active, .lang-btn:hover { background:var(--bark); color:var(--darkerpink); }
-
+    .cart-btn {
+      background:var(--darkerpink); color:var(--cream);
+      border:none; padding:10px 22px; cursor:pointer;
+      font-size:12px; letter-spacing:1.5px; font-family:'Lato',sans-serif;
+      display:flex; align-items:center; gap:8px;
+      text-decoration:none;
+    }
+        .cart-btn:hover { background:var(--charcoal); }
+    .cart-count {
+      background:var(--clay); color:#fff;
+      border-radius:50%; width:18px; height:18px;
+      display:flex; align-items:center; justify-content:center;
+      font-size:10px; font-weight:bold;
+    }
+    .lang-toggle { display:flex; gap:6px; }
+    .lang-btn {
+      background: var(--darkerpink);; border:1px solid var(--black);
+      color:var(--bcream); padding:5px 12px; font-size:11px;
+      letter-spacing:1.5px; cursor:pointer; font-family:'Lato',sans-serif;
+      transition:all 0.3s;
+    }
+    .lang-btn.active, .lang-btn:hover { background:var(--charcoal); color:var(--bcream); }
     .breadcrumb{padding:24px 60px 0;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--darkerpink);}
     .breadcrumb a{color:var(--darkerpink);text-decoration:none;}
 
