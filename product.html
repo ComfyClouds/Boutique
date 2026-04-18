@@ -28,16 +28,10 @@
     body{background:var(--bcream);color:var(--charcoal);font-family:'Lato',sans-serif;font-weight:300;}
     body.ar{font-family:'Amiri',serif;direction:rtl;}
     
-    .nav{background:var(--warm-white);border-bottom:1px solid rgba(107,79,53,0.12);padding:20px 60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:90;}
-    .nav-brand { font-style:italic; color:var(--darkerpink); }
-    .nav-actions { display:flex; gap:20px; align-items:center; }
-    .nav-home { 
-  font-size: 12px; 
-  letter-spacing: 1.5px; 
-  text-transform: uppercase; 
-  text-decoration: none; 
-  color: var(--charcoal); /* Changed from --bcream to --charcoal */
-}
+    nav{background:var(--warm-white);border-bottom:1px solid rgba(107,79,53,0.12);padding:20px 60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:90;}
+    .nav-brand{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;text-decoration:none;color:var(--charcoal);}
+    .nav-brand em { font-style:italic; color:var(--darkerpink); }
+    .nav-actions{display:flex;gap:20px;align-items:center;}
     .cart-btn {
       background:var(--darkerpink); color:var(--cream);
       border:none; padding:10px 22px; cursor:pointer;
@@ -97,14 +91,13 @@
     .product-details{display:flex;flex-direction:column;gap:20px;padding-left:20px;}
     body.ar .product-details{padding-left:0;padding-right:20px;}
     .product-name-big{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,4vw,48px);font-weight:300;line-height:1.1;}
-    
     .product-price-big{font-size:28px;color:var(--charcoal);font-family:'Cormorant Garamond',serif;}
 
     .customizer-box { background: rgba(107,79,53,0.05); padding: 20px; border-radius: 4px; display: flex; flex-direction: column; gap: 15px; margin-top: 10px; }
     .opt-group { display: flex; flex-direction: column; gap: 6px; }
     .opt-label { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--clay); font-weight: bold; }
     .opt-select, .opt-textarea { 
-        width: 100%; padding: 10px; border: 1px solid var(--darekerpink); 
+        width: 100%; padding: 10px; border: 1px solid rgba(107,79,53,0.2); 
         background: white; font-family: inherit; font-size: 14px;
     }
     .opt-textarea { height: 80px; resize: none; }
