@@ -22,6 +22,7 @@
       --darkerpink: #db96a1;
       --darkerbtn: #3a2428;
        --creamyy: #fffffd;
+       --black: #030000;
     }
     * { margin:0; padding:0; box-sizing:border-box; }
     body { background:var(--warm-white); color:var(--charcoal); font-family:'Lato',sans-serif; font-weight:300; }
@@ -61,12 +62,12 @@
     }
     .lang-toggle { display:flex; gap:6px; }
     .lang-btn {
-      background:transparent; border:1px solid var(--bark);
-      color:var(--darkerpink); padding:5px 12px; font-size:11px;
+      background: var(--darkerpink);; border:1px solid var(--black);
+      color:var(--bcream); padding:5px 12px; font-size:11px;
       letter-spacing:1.5px; cursor:pointer; font-family:'Lato',sans-serif;
       transition:all 0.3s;
     }
-    .lang-btn.active, .lang-btn:hover { background:var(--bark); color:var(--darkerpink); }
+    .lang-btn.active, .lang-btn:hover { background:var(--charcoal); color:var(--bcream); }
 
     /* PAGE HEADER */
     .page-header {
